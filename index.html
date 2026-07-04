@@ -642,21 +642,11 @@ footer{position:relative;z-index:1;border-top:1px solid rgba(0,232,124,.1);paddi
     try{
       const res=await fetch(form.action,{method:'POST',body:fd,headers:{Accept:'application/json'}});
       if(res.ok){
-        form.querySelectorAll('input,textarea,select,button[type=submit]').forEach(el=>el.style.display='none');
-        const s=document.getElementById('stray-success');
-        const rows=[
-          ['Reporter',fd.get('name')],
-          ['Email',fd.get('email')],
-          ['Animal type',fd.get('animal_type')],
-          ['Location',fd.get('location')],
-          ['Condition',fd.get('condition')||'—'],
-          ['Details',fd.get('details')||'—'],
-        ];
-        s.innerHTML='<div style="text-align:left;font-family:\'Share Tech Mono\',monospace;font-size:12px;line-height:1.8">'
-          +'<div style="color:var(--green);letter-spacing:.1em;margin-bottom:10px">✓ ALERT SENT — VOLUNTEERS ARE BEING NOTIFIED</div>'
-          +rows.map(([k,v])=>`<div><span style="color:#a8bfd8;letter-spacing:.08em">${k}:</span> <span style="color:#fff">${v}</span></div>`).join('')
+        const rows=[['Reporter',fd.get('name')],['Email',fd.get('email')],['Animal type',fd.get('animal_type')],['Location',fd.get('location')],['Condition',fd.get('condition')],['Details',fd.get('details')]];
+        form.innerHTML='<div style="font-family:\'Share Tech Mono\',monospace;font-size:12px;line-height:2;text-align:left">'
+          +'<div style="color:var(--green);letter-spacing:.1em;margin-bottom:12px;font-size:13px">✓ ALERT SENT — VOLUNTEERS ARE BEING NOTIFIED</div>'
+          +rows.filter(([,v])=>v).map(([k,v])=>`<div><span style="color:#a8bfd8;letter-spacing:.08em">${k}:</span> <span style="color:#fff">${v}</span></div>`).join('')
           +'</div>';
-        s.style.display='block';
       } else { throw new Error(); }
     } catch(_){
       submitBtn.textContent='SEND ALERT 🐾';submitBtn.disabled=false;
@@ -927,8 +917,11 @@ footer{position:relative;z-index:1;border-top:1px solid rgba(0,232,124,.1);paddi
     try{
       const res=await fetch(form.action,{method:'POST',body:data,headers:{Accept:'application/json'}});
       if(res.ok){
-        form.querySelectorAll('input,textarea,button[type=submit]').forEach(el=>el.style.display='none');
-        document.getElementById('franchise-success').style.display='block';
+        const rows=[['Name',data.get('name')],['Email',data.get('email')],['Location',data.get('location')],['Phone',data.get('phone')],['Message',data.get('message')]];
+        form.innerHTML='<div style="font-family:\'Share Tech Mono\',monospace;font-size:12px;line-height:2;text-align:left">'
+          +'<div style="color:var(--green);letter-spacing:.1em;margin-bottom:12px;font-size:13px">✓ APPLICATION SENT — WE\'LL REVIEW IT WITHIN 7 DAYS</div>'
+          +rows.filter(([,v])=>v).map(([k,v])=>`<div><span style="color:#a8bfd8;letter-spacing:.08em">${k}:</span> <span style="color:#fff">${v}</span></div>`).join('')
+          +'</div>';
       } else { throw new Error(); }
     } catch(_){
       submitBtn.textContent='SUBMIT APPLICATION →';submitBtn.disabled=false;
