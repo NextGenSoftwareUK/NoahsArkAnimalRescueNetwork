@@ -1,0 +1,1423 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Noah's Ark Animal Rescue Network — Rescue. Adopt. Earn Karma.</title>
+<meta name="description" content="Noah's Ark Animal Rescue Network — a global franchise of rescue centres, vets, healing centres, day care and shops. Rescue or adopt an animal and earn karma through the OASIS Web4 Karma API. Our mission: every stray cat and dog finds a loving home.">
+<meta property="og:title" content="Noah's Ark Animal Rescue Network — Rescue. Adopt. Earn Karma.">
+<meta property="og:description" content="Every rescue earns karma. Every adoption earns more. Together we give every stray animal a loving home — powered by the OASIS Web4 Karma API.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐾</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+:root{
+  --green:#00e87c;--green-glow:rgba(0,232,124,.18);
+  --amber:#f0a500;--amber-glow:rgba(240,165,0,.18);
+  --rose:#ff5fa0;
+  --violet:#a78bfa;
+  --bg-deep:#030714;--bg-card:#0a1535;--bg-card2:#071028;
+  --text:#d0e4ff;--text-dim:#6a80a8;
+  --heading:#ffffff;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg-deep);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:16px;line-height:1.6;overflow-x:hidden}
+
+#star-canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 40px;display:flex;align-items:center;justify-content:space-between;background:rgba(3,7,20,.88);backdrop-filter:blur(12px);border-bottom:1px solid rgba(0,232,124,.12)}
+.nav-brand{font-family:'Orbitron',sans-serif;font-size:12px;font-weight:700;letter-spacing:.18em;color:#fff;text-decoration:none;display:flex;align-items:center;gap:10px}
+.nav-brand .paw{font-size:18px}
+.nav-brand span{color:var(--green)}
+.nav-links{display:flex;gap:28px;list-style:none}
+.nav-links a{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:.14em;color:#a8bfd8;text-decoration:none;transition:color .2s;text-transform:uppercase}
+.nav-links-mobile-only{display:none}
+.nav-links a:hover{color:var(--green)}
+.nav-cta{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:.1em;color:var(--green);border:1px solid rgba(0,232,124,.35);border-radius:999px;padding:8px 18px;text-decoration:none;transition:background .2s,border-color .2s;white-space:nowrap}
+.nav-cta:hover{background:rgba(0,232,124,.08);border-color:rgba(0,232,124,.6)}
+.nav-right{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:32px;height:32px;background:none;border:none;cursor:pointer;z-index:101}
+.nav-toggle span{display:block;width:100%;height:2px;background:#a8bfd8;transition:transform .25s,opacity .25s}
+.nav-toggle.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle.open span:nth-child(2){opacity:0}
+.nav-toggle.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+@media(max-width:860px){
+  .nav-toggle{display:flex}
+  .nav-links{position:fixed;top:0;right:0;height:100vh;width:min(78vw,320px);flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:14px;padding:76px 32px 24px;overflow-y:auto;background:rgba(3,7,20,.97);backdrop-filter:blur(12px);border-left:1px solid rgba(0,232,124,.12);transform:translateX(100%);transition:transform .3s ease}
+  .nav-links.open{transform:translateX(0)}
+  .nav-links-mobile-only{display:list-item}
+}
+
+/* ── SECTIONS ── */
+.section{position:relative;z-index:1;padding:100px 40px;max-width:1200px;margin:0 auto}
+.section-full{position:relative;z-index:1;padding:100px 40px}
+.section-kicker{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:.28em;color:var(--green);margin-bottom:16px;text-align:center}
+.section-kicker.amber{color:var(--amber)}
+.section-kicker.violet{color:var(--violet)}
+.section-title{font-family:'Orbitron',sans-serif;font-size:clamp(26px,4vw,44px);font-weight:900;letter-spacing:.06em;color:var(--heading);text-align:center;margin-bottom:18px;line-height:1.15}
+.section-line{display:block;width:60px;height:2px;background:linear-gradient(90deg,transparent,var(--green),transparent);margin:0 auto 36px}
+.section-line.amber{background:linear-gradient(90deg,transparent,var(--amber),transparent)}
+.section-line.violet{background:linear-gradient(90deg,transparent,var(--violet),transparent)}
+.section-sub{font-size:17px;color:#a8bfd8;text-align:center;max-width:720px;margin:0 auto 56px;line-height:1.7}
+
+/* ── HERO ── */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:120px 40px 80px;position:relative;z-index:1}
+.hero-kicker{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:.35em;color:var(--green);margin-bottom:28px;display:flex;align-items:center;justify-content:center;gap:12px}
+.hero-kicker::before,.hero-kicker::after{content:'';width:50px;height:1px;background:linear-gradient(90deg,transparent,var(--green))}
+.hero-kicker::after{background:linear-gradient(90deg,var(--green),transparent)}
+.hero h1{font-family:'Orbitron',sans-serif;font-size:clamp(30px,6.5vw,82px);font-weight:900;letter-spacing:.06em;color:var(--heading);line-height:1.05;margin-bottom:16px}
+.hero h1 em{color:var(--green);font-style:normal;text-shadow:0 0 40px rgba(0,232,124,.5)}
+.hero h1 .amber{color:var(--amber);text-shadow:0 0 40px rgba(240,165,0,.5)}
+.hero-tagline{font-family:'Share Tech Mono',monospace;font-size:clamp(12px,1.8vw,16px);letter-spacing:.22em;color:var(--green);margin-bottom:28px;opacity:.9}
+.hero-desc{font-size:clamp(15px,1.8vw,19px);color:#a8bfd8;max-width:700px;line-height:1.75;margin-bottom:48px}
+.hero-ctas{display:flex;gap:16px;flex-wrap:wrap;justify-content:center}
+.btn-primary{font-family:'Share Tech Mono',monospace;font-size:12px;letter-spacing:.14em;color:#fff;background:linear-gradient(135deg,rgba(0,232,124,.25),rgba(0,232,124,.1));border:1px solid rgba(0,232,124,.5);border-radius:999px;padding:14px 32px;text-decoration:none;transition:background .25s,border-color .25s,box-shadow .25s;display:inline-block}
+.btn-primary:hover{background:linear-gradient(135deg,rgba(0,232,124,.4),rgba(0,232,124,.2));border-color:var(--green);box-shadow:0 0 32px rgba(0,232,124,.3)}
+.btn-amber{font-family:'Share Tech Mono',monospace;font-size:12px;letter-spacing:.14em;color:#fff;background:linear-gradient(135deg,rgba(240,165,0,.25),rgba(240,165,0,.1));border:1px solid rgba(240,165,0,.5);border-radius:999px;padding:14px 32px;text-decoration:none;transition:background .25s,border-color .25s,box-shadow .25s;display:inline-block}
+.btn-amber:hover{background:linear-gradient(135deg,rgba(240,165,0,.4),rgba(240,165,0,.2));border-color:var(--amber);box-shadow:0 0 32px rgba(240,165,0,.3)}
+.btn-secondary{font-family:'Share Tech Mono',monospace;font-size:12px;letter-spacing:.14em;color:#a8bfd8;background:transparent;border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:14px 32px;text-decoration:none;transition:border-color .25s,color .25s;display:inline-block}
+.btn-secondary:hover{border-color:rgba(255,255,255,.3);color:#fff;box-shadow:0 0 16px rgba(255,255,255,.1)}
+
+/* ── HERO CANVAS ── */
+#narn-canvas{display:block;width:100%;max-width:100%;margin:50px auto 0;pointer-events:none;opacity:.9;order:10}
+
+/* ── STATS BAND ── */
+.stats-band{background:linear-gradient(135deg,rgba(0,232,124,.06),rgba(3,7,20,.96));border-top:1px solid rgba(0,232,124,.12);border-bottom:1px solid rgba(0,232,124,.12);padding:48px 40px;position:relative;z-index:1}
+.stats-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:32px;text-align:center}
+.stat-num{font-family:'Orbitron',sans-serif;font-size:clamp(28px,4vw,48px);font-weight:900;color:var(--green);letter-spacing:.04em;display:block}
+.stat-num.amber{color:var(--amber)}
+.stat-label{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:.2em;color:#a8bfd8;margin-top:4px;display:block}
+
+/* ── MISSION ── */
+.mission-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;max-width:1100px;margin:0 auto}
+.mission-text h2{font-family:'Orbitron',sans-serif;font-size:clamp(22px,3vw,36px);font-weight:900;letter-spacing:.06em;color:var(--heading);margin-bottom:20px;line-height:1.2}
+.mission-text h2 em{color:var(--green);font-style:normal}
+.mission-text p{font-size:17px;color:#a8bfd8;line-height:1.75;margin-bottom:16px}
+.mission-pillars{display:flex;flex-direction:column;gap:12px;margin-top:24px}
+.pillar{display:flex;align-items:flex-start;gap:14px;padding:16px 18px;background:var(--bg-card);border:1px solid rgba(0,232,124,.1);border-radius:12px}
+.pillar-icon{font-size:24px;flex-shrink:0;margin-top:2px}
+.pillar-body h4{font-family:'Orbitron',sans-serif;font-size:12px;font-weight:700;letter-spacing:.1em;color:var(--green);margin-bottom:4px}
+.pillar-body p{font-size:15px;color:#a8bfd8;line-height:1.6}
+.mission-visual{position:relative;display:flex;align-items:center;justify-content:center}
+#mission-canvas{width:100%;max-width:480px;display:block}
+@media(max-width:820px){
+  .mission-grid{grid-template-columns:1fr}
+  .mission-visual{order:-1}
+}
+
+/* ── KARMA SYSTEM ── */
+.karma-split{display:grid;grid-template-columns:1fr 1fr;gap:28px;max-width:1000px;margin:0 auto 48px}
+.karma-card{border-radius:20px;padding:40px 32px;text-align:center;position:relative;overflow:hidden}
+.karma-card.rescue{background:linear-gradient(135deg,rgba(0,232,124,.09),rgba(10,21,53,.96));border:1px solid rgba(0,232,124,.25)}
+.karma-card.adopt{background:linear-gradient(135deg,rgba(240,165,0,.09),rgba(10,21,53,.96));border:1px solid rgba(240,165,0,.28)}
+.karma-card::before{content:'';position:absolute;inset:0;border-radius:20px;opacity:0;transition:opacity .3s}
+.karma-card.rescue::before{background:radial-gradient(ellipse at 50% 0%,rgba(0,232,124,.08),transparent 70%)}
+.karma-card.adopt::before{background:radial-gradient(ellipse at 50% 0%,rgba(240,165,0,.08),transparent 70%)}
+.karma-card:hover::before{opacity:1}
+.karma-icon{font-size:56px;display:block;margin-bottom:16px}
+.karma-label{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:.28em;margin-bottom:10px}
+.karma-card.rescue .karma-label{color:var(--green)}
+.karma-card.adopt .karma-label{color:var(--amber)}
+.karma-amount{font-family:'Orbitron',sans-serif;font-size:clamp(32px,5vw,60px);font-weight:900;letter-spacing:.04em;display:block;margin-bottom:6px}
+.karma-card.rescue .karma-amount{color:var(--green);text-shadow:0 0 30px rgba(0,232,124,.4)}
+.karma-card.adopt .karma-amount{color:var(--amber);text-shadow:0 0 30px rgba(240,165,0,.4)}
+.karma-unit{font-family:'Share Tech Mono',monospace;font-size:15px;letter-spacing:.18em;display:block;margin-bottom:20px}
+.karma-card.rescue .karma-unit{color:rgba(0,232,124,.6)}
+.karma-card.adopt .karma-unit{color:rgba(240,165,0,.6)}
+.karma-desc{font-size:16px;color:#a8bfd8;line-height:1.65}
+.karma-steps{max-width:700px;margin:0 auto;display:flex;flex-direction:column;gap:4px}
+.karma-step{display:flex;align-items:center;gap:16px;padding:14px 20px;background:var(--bg-card);border:1px solid rgba(255,255,255,.07);border-radius:10px}
+.step-num{font-family:'Orbitron',sans-serif;font-size:18px;font-weight:900;color:var(--green);min-width:28px}
+.step-text{font-size:15px;color:#a8bfd8}
+.step-karma{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:.14em;color:var(--amber);margin-left:auto;white-space:nowrap}
+@media(max-width:640px){.karma-split{grid-template-columns:1fr}}
+
+/* ── PROFILE ── */
+.profile-showcase{max-width:900px;margin:0 auto}
+.profile-card{background:var(--bg-card);border:1px solid rgba(0,232,124,.15);border-radius:20px;padding:36px;display:grid;grid-template-columns:auto 1fr auto;gap:28px;align-items:center;margin-bottom:20px;transition:border-color .3s}
+.profile-card:hover{border-color:rgba(0,232,124,.3)}
+.profile-avatar{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,rgba(0,232,124,.2),rgba(240,165,0,.2));border:2px solid rgba(0,232,124,.3);display:flex;align-items:center;justify-content:center;font-size:36px;flex-shrink:0}
+.profile-info h3{font-family:'Orbitron',sans-serif;font-size:15px;font-weight:700;letter-spacing:.1em;color:var(--heading);margin-bottom:6px}
+.profile-badges{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.badge{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:.14em;padding:5px 12px;border-radius:999px;border:1px solid}
+.badge.green{color:var(--green);border-color:rgba(0,232,124,.3);background:rgba(0,232,124,.07)}
+.badge.amber{color:var(--amber);border-color:rgba(240,165,0,.3);background:rgba(240,165,0,.07)}
+.badge.rose{color:var(--rose);border-color:rgba(255,95,160,.3);background:rgba(255,95,160,.07)}
+.badge.violet{color:var(--violet);border-color:rgba(167,139,250,.3);background:rgba(167,139,250,.07)}
+.profile-sub{font-size:14px;color:#a8bfd8}
+.profile-stats{display:flex;flex-direction:column;gap:8px;text-align:right}
+.pstat{display:flex;flex-direction:column}
+.pstat-num{font-family:'Orbitron',sans-serif;font-size:20px;font-weight:900;color:var(--green);letter-spacing:.04em}
+.pstat-num.amber{color:var(--amber)}
+.pstat-label{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:.14em;color:#a8bfd8}
+.star-row{display:flex;gap:3px;margin-top:8px;justify-content:flex-end}
+.star{color:var(--amber);font-size:16px}
+@media(max-width:700px){
+  .profile-card{grid-template-columns:auto 1fr;grid-template-rows:auto auto}
+  .profile-stats{grid-column:1/-1;text-align:left;flex-direction:row;flex-wrap:wrap;gap:16px}
+  .star-row{justify-content:flex-start}
+}
+
+/* ── NETWORK ── */
+.network-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;max-width:1100px;margin:0 auto}
+.network-card{background:var(--bg-card);border:1px solid rgba(0,232,124,.1);border-radius:16px;padding:30px 24px;text-align:center;transition:transform .3s,border-color .3s}
+.network-card:hover{transform:translateY(-5px);border-color:rgba(0,232,124,.3)}
+.network-icon{font-size:40px;display:block;margin-bottom:14px}
+.network-title{font-family:'Orbitron',sans-serif;font-size:15px;font-weight:700;letter-spacing:.1em;color:var(--green);margin-bottom:10px}
+.network-desc{font-size:15px;color:#a8bfd8;line-height:1.65}
+
+/* ── FEATURES ── */
+.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;max-width:1100px;margin:0 auto}
+.feature-card{background:var(--bg-card);border:1px solid rgba(0,232,124,.1);border-radius:14px;padding:32px 26px;transition:transform .3s,border-color .3s}
+.feature-card:hover{transform:translateY(-5px);border-color:rgba(0,232,124,.28)}
+.feature-icon{font-size:32px;margin-bottom:16px;display:block}
+.feature-title{font-family:'Orbitron',sans-serif;font-size:.98rem;font-weight:700;letter-spacing:.1em;color:var(--heading);margin-bottom:10px}
+.feature-desc{font-size:15px;color:#a8bfd8;line-height:1.65}
+
+/* ── OASIS INTEGRATION ── */
+.integration-band{max-width:960px;margin:0 auto;background:linear-gradient(135deg,rgba(0,232,124,.05),rgba(10,21,53,.96));border:1px solid rgba(0,232,124,.18);border-radius:20px;padding:56px 44px;text-align:center}
+.integration-band h3{font-family:'Orbitron',sans-serif;font-size:22px;font-weight:900;letter-spacing:.08em;color:var(--heading);margin-bottom:14px}
+.integration-band p{font-size:16px;color:#a8bfd8;line-height:1.7;max-width:700px;margin:0 auto 28px}
+.pill-row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.pill{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:.16em;color:var(--green);border:1px solid rgba(0,232,124,.28);border-radius:999px;padding:7px 16px}
+.pill.amber{color:var(--amber);border-color:rgba(240,165,0,.3)}
+.pill.violet{color:var(--violet);border-color:rgba(167,139,250,.3)}
+.pill.rose{color:var(--rose);border-color:rgba(255,95,160,.3)}
+
+/* ── HEALING TEASER ── */
+.healing-band{max-width:960px;margin:0 auto;background:linear-gradient(135deg,rgba(167,139,250,.06),rgba(3,7,20,.97));border:1px solid rgba(167,139,250,.18);border-radius:20px;padding:56px 44px;text-align:center;position:relative;overflow:hidden}
+.healing-band::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(167,139,250,.1),transparent 65%);pointer-events:none}
+.healing-band h3{font-family:'Orbitron',sans-serif;font-size:22px;font-weight:900;letter-spacing:.08em;color:var(--heading);margin-bottom:14px}
+.healing-band p{font-size:16px;color:#a8bfd8;line-height:1.7;max-width:700px;margin:0 auto 28px;position:relative;z-index:1}
+.coming-soon{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:.3em;color:var(--violet);background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.25);border-radius:999px;padding:8px 20px;display:inline-block;margin-bottom:20px}
+
+/* ── FRANCHISE ── */
+.franchise-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;max-width:1100px;margin:0 auto 40px}
+.fstep{background:var(--bg-card);border:1px solid rgba(0,232,124,.1);border-radius:16px;padding:28px 22px;text-align:center;position:relative}
+.fstep-num{font-family:'Orbitron',sans-serif;font-size:36px;font-weight:900;color:rgba(0,232,124,.15);position:absolute;top:14px;right:16px;line-height:1}
+.fstep-icon{font-size:36px;display:block;margin-bottom:12px}
+.fstep-title{font-family:'Orbitron',sans-serif;font-size:12px;font-weight:700;letter-spacing:.1em;color:var(--green);margin-bottom:8px}
+.fstep-desc{font-size:15px;color:#a8bfd8;line-height:1.6}
+
+/* ── CTA BAND ── */
+.cta-band{position:relative;z-index:1;padding:100px 40px;text-align:center}
+.cta-inner{max-width:760px;margin:0 auto}
+.cta-inner h2{font-family:'Orbitron',sans-serif;font-size:clamp(24px,4vw,42px);font-weight:900;letter-spacing:.07em;color:var(--heading);margin-bottom:18px;line-height:1.15}
+.cta-inner h2 em{color:var(--green);font-style:normal}
+.cta-inner p{font-size:17px;color:#a8bfd8;line-height:1.7;margin-bottom:36px;max-width:580px;margin-left:auto;margin-right:auto}
+.cta-buttons{display:flex;gap:16px;flex-wrap:wrap;justify-content:center}
+
+/* ── FOOTER ── */
+footer{position:relative;z-index:1;border-top:1px solid rgba(0,232,124,.1);padding:56px 40px;text-align:center}
+.footer-brand{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:700;letter-spacing:.18em;color:var(--heading);margin-bottom:10px}
+.footer-brand span{color:var(--green)}
+.footer-tagline{font-size:15px;color:#a8bfd8;margin-bottom:28px}
+.footer-links{display:flex;gap:28px;justify-content:center;flex-wrap:wrap;list-style:none;margin-bottom:28px}
+.footer-links a{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:.14em;color:#a8bfd8;text-decoration:none;text-transform:uppercase;transition:color .2s}
+.footer-links a:hover{color:var(--green)}
+.footer-legal{font-size:15px;color:#a8bfd8}
+.footer-legal a{color:#a8bfd8;text-decoration:none;transition:color .2s}
+.footer-legal a:hover{color:var(--green)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:520px){
+  .section{padding:80px .75rem}
+  .section-full{padding:80px .75rem}
+  nav{padding:14px 18px}
+  .hero{padding:100px .75rem 60px}
+  .stats-band{padding:40px .75rem}
+  .cta-band{padding:80px .75rem}
+  footer{padding:48px .75rem}
+  .karma-split{grid-template-columns:1fr}
+  .integration-band{padding:36px 20px}
+  .healing-band{padding:36px 20px}
+}
+</style>
+</head>
+<body>
+
+<canvas id="star-canvas"></canvas>
+
+<!-- NAV -->
+<nav id="nav">
+  <a class="nav-brand" href="#">
+    <span class="paw">🐾</span>
+    <span>NOAH'S <span>ARK</span></span>
+  </a>
+  <button class="nav-toggle" id="nav-toggle" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="#mission">Mission</a></li>
+    <li><a href="#karma">Karma</a></li>
+    <li><a href="#profiles">Profiles</a></li>
+    <li><a href="#network">Network</a></li>
+    <li><a href="#strays">Report a Stray</a></li>
+    <li><a href="#community">Community</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#healing">Healing</a></li>
+    <li><a href="#digitalpet">Digital Pet</a></li>
+    <li><a href="#franchise">Franchise</a></li>
+    <li class="nav-links-mobile-only"><a href="#adopt">Adopt Now</a></li>
+  </ul>
+  <div class="nav-right"><a class="nav-cta" href="#adopt">🐾 Adopt Now</a></div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-kicker">POWERED BY THE OASIS WEB4 KARMA API</div>
+  <h1>NOAH'S ARK<br><em>ANIMAL RESCUE</em><br>NETWORK</h1>
+  <div class="hero-tagline">RESCUE. ADOPT. EARN KARMA. CHANGE THE WORLD.</div>
+  <p class="hero-desc">A global franchise of rescue centres, vets, healing centres, day care and shops — united by one mission: <strong>give every stray cat, dog and animal a loving home.</strong> Every rescue earns karma. Every adoption earns more.</p>
+  <div class="hero-ctas">
+    <a class="btn-amber" href="#adopt">🐾 Adopt an Animal</a>
+    <a class="btn-primary" href="#karma">Earn Karma →</a>
+    <a class="btn-secondary" href="#network">Find a Centre</a>
+  </div>
+  <canvas id="narn-canvas"></canvas>
+</section>
+
+<!-- STATS -->
+<div class="stats-band">
+  <div class="stats-inner">
+    <div>
+      <span class="stat-num">847,000+</span>
+      <span class="stat-label">Animals Rescued</span>
+    </div>
+    <div>
+      <span class="stat-num amber">2.4B+</span>
+      <span class="stat-label">Karma Points Awarded</span>
+    </div>
+    <div>
+      <span class="stat-num">3,200+</span>
+      <span class="stat-label">Centres Worldwide</span>
+    </div>
+    <div>
+      <span class="stat-num amber">612,000+</span>
+      <span class="stat-label">Animals Adopted</span>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION -->
+<section class="section" id="mission">
+  <div class="mission-grid">
+    <div class="mission-text">
+      <div class="section-kicker" style="text-align:left">OUR MISSION</div>
+      <h2>Every stray deserves a <em>loving home</em></h2>
+      <p>Noah's Ark Animal Rescue Network is a coordinated global movement — a franchise ecosystem of rescue centres, veterinary clinics, healing sanctuaries, day care facilities and shops, all working together toward one shared vision.</p>
+      <p>By harnessing the power of the OASIS Web4 Karma API, we turn compassion into a measurable, rewarded force. The more you give, the more you earn — in karma and in the knowledge you are changing lives.</p>
+      <div class="mission-pillars">
+        <div class="pillar">
+          <span class="pillar-icon">🐕</span>
+          <div class="pillar-body">
+            <h4>Rescue</h4>
+            <p>Find a stray, bring them in. Every animal you rescue earns you karma and appears as a happy rescue on your public profile.</p>
+          </div>
+        </div>
+        <div class="pillar">
+          <span class="pillar-icon">🏡</span>
+          <div class="pillar-body">
+            <h4>Adopt</h4>
+            <p>Give a rescued animal a permanent home. Adoptions earn more karma than rescues, and the animal's happiness score grows over time on your profile.</p>
+          </div>
+        </div>
+        <div class="pillar">
+          <span class="pillar-icon">💚</span>
+          <div class="pillar-body">
+            <h4>Heal</h4>
+            <p>Deep integration with the Global Healing Network lets you send loving healing energy to animals in need — emotionally or physically.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mission-visual">
+      <canvas id="mission-canvas" width="480" height="480"></canvas>
+    </div>
+  </div>
+</section>
+
+<!-- KARMA SYSTEM -->
+<section class="section-full" id="karma" style="background:linear-gradient(180deg,transparent,rgba(0,232,124,.03),transparent)">
+  <div class="section" style="padding-top:0;padding-bottom:0">
+    <div class="section-kicker amber">WEB4 KARMA API</div>
+    <h2 class="section-title">The Karma System</h2>
+    <span class="section-line amber"></span>
+    <p class="section-sub">Every compassionate action earns karma through the OASIS Web4 Karma API — stored on your universal avatar, visible across the entire OASIS Omniverse ecosystem. The more you give, the more the world sees.</p>
+
+    <div class="karma-split">
+      <div class="karma-card rescue">
+        <span class="karma-icon">🐾</span>
+        <div class="karma-label">RESCUE AN ANIMAL</div>
+        <span class="karma-amount">+500</span>
+        <span class="karma-unit">KARMA POINTS</span>
+        <p class="karma-desc">Find a stray cat, dog or any animal and bring them to your nearest Noah's Ark ARN rescue centre. A verified rescue is logged on the blockchain and karma is instantly awarded to your OASIS avatar.</p>
+      </div>
+      <div class="karma-card adopt">
+        <span class="karma-icon">🏡</span>
+        <div class="karma-label">ADOPT AN ANIMAL</div>
+        <span class="karma-amount">+1,500</span>
+        <span class="karma-unit">KARMA POINTS</span>
+        <p class="karma-desc">Open your home to a rescued animal. Adoptions earn three times more karma than rescues — because giving an animal a permanent, loving home is the ultimate act of compassion.</p>
+      </div>
+    </div>
+
+    <div class="karma-steps">
+      <div class="karma-step">
+        <span class="step-num">1</span>
+        <span class="step-text">Find a stray or bring an animal to your local Noah's Ark ARN centre</span>
+        <span class="step-karma">RESCUE</span>
+      </div>
+      <div class="karma-step">
+        <span class="step-num">2</span>
+        <span class="step-text">Centre staff verify and log the rescue — karma awarded instantly via Web4 API</span>
+        <span class="step-karma">+500 ✦</span>
+      </div>
+      <div class="karma-step">
+        <span class="step-num">3</span>
+        <span class="step-text">Browse available animals at any centre worldwide and choose to adopt</span>
+        <span class="step-karma">ADOPT</span>
+      </div>
+      <div class="karma-step">
+        <span class="step-num">4</span>
+        <span class="step-text">Complete adoption — additional karma awarded, animal appears on your profile</span>
+        <span class="step-karma">+1,500 ✦</span>
+      </div>
+      <div class="karma-step">
+        <span class="step-num">5</span>
+        <span class="step-text">Your animal's happiness score grows over time — visible to everyone on your profile</span>
+        <span class="step-karma">ONGOING ✦</span>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:40px">
+      <p style="font-size:15px;color:#a8bfd8;margin-bottom:18px;max-width:600px;margin-left:auto;margin-right:auto">Karma accumulates across every OASIS-connected world — Our World, OQuake, ODOOM, and any dApp built with the STAR ODK. Your compassion follows you everywhere.</p>
+      <a class="btn-primary" href="https://api.web4.oasisomniverse.one" target="_blank" rel="noopener">Explore the Web4 Karma API →</a>
+    </div>
+  </div>
+</section>
+
+<!-- PROFILES -->
+<section class="section" id="profiles">
+  <div class="section-kicker">COMMUNITY PROFILES</div>
+  <h2 class="section-title">Your Rescue Legacy</h2>
+  <span class="section-line"></span>
+  <p class="section-sub">Every member's profile shows their star rating, total karma earned, how many animals they have rescued and adopted, and — most importantly — how long each of their adopted animals has been happy in their care.</p>
+
+  <div class="profile-showcase">
+    <div class="profile-card">
+      <div class="profile-avatar">🦸</div>
+      <div class="profile-info">
+        <h3>SophiaRescues</h3>
+        <div class="profile-badges">
+          <span class="badge green">RESCUE CHAMPION</span>
+          <span class="badge amber">SERIAL ADOPTER</span>
+          <span class="badge rose">3-YEAR CARER</span>
+        </div>
+        <p class="profile-sub">12 rescues · 4 adoptions · longest adoption: 3 years 4 months</p>
+      </div>
+      <div class="profile-stats">
+        <div class="pstat"><span class="pstat-num">47,800</span><span class="pstat-label">Total Karma</span></div>
+        <div class="pstat"><span class="pstat-num amber">4</span><span class="pstat-label">Happy Pets</span></div>
+        <div class="star-row"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+      </div>
+    </div>
+    <div class="profile-card">
+      <div class="profile-avatar">🌟</div>
+      <div class="profile-info">
+        <h3>MarcusTheRescuer</h3>
+        <div class="profile-badges">
+          <span class="badge green">TOP RESCUER</span>
+          <span class="badge violet">HEALING SENDER</span>
+        </div>
+        <p class="profile-sub">31 rescues · 1 adoption · longest adoption: 1 year 8 months</p>
+      </div>
+      <div class="profile-stats">
+        <div class="pstat"><span class="pstat-num">22,500</span><span class="pstat-label">Total Karma</span></div>
+        <div class="pstat"><span class="pstat-num amber">1</span><span class="pstat-label">Happy Pets</span></div>
+        <div class="star-row"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span style="color:#a8bfd8">★</span></div>
+      </div>
+    </div>
+    <div class="profile-card">
+      <div class="profile-avatar">💜</div>
+      <div class="profile-info">
+        <h3>AmeliaHeals</h3>
+        <div class="profile-badges">
+          <span class="badge violet">HEALER</span>
+          <span class="badge amber">ADOPTER</span>
+          <span class="badge green">RESCUER</span>
+        </div>
+        <p class="profile-sub">7 rescues · 3 adoptions · sends healing daily via Global Healing Network</p>
+      </div>
+      <div class="profile-stats">
+        <div class="pstat"><span class="pstat-num">31,200</span><span class="pstat-label">Total Karma</span></div>
+        <div class="pstat"><span class="pstat-num amber">3</span><span class="pstat-label">Happy Pets</span></div>
+        <div class="star-row"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin-top:40px">
+    <p style="font-size:15px;color:#a8bfd8;margin-bottom:18px">Profiles are powered by your OASIS universal avatar — one identity, one karma score, every world.</p>
+    <a class="btn-secondary" href="https://oportal.oasisomniverse.one" target="_blank" rel="noopener">View OPORTAL Profiles →</a>
+  </div>
+</section>
+
+<!-- NETWORK -->
+<section class="section-full" id="network" style="background:linear-gradient(180deg,transparent,rgba(0,232,124,.03),transparent)">
+  <div class="section" style="padding-top:0;padding-bottom:0">
+    <div class="section-kicker">GLOBAL FRANCHISE</div>
+    <h2 class="section-title">The Network</h2>
+    <span class="section-line"></span>
+    <p class="section-sub">Noah's Ark ARN is more than a rescue centre — it's a complete ecosystem of care. Every franchise location offers the full suite of services, united under one brand and one karma system.</p>
+    <div class="network-grid">
+      <div class="network-card">
+        <span class="network-icon">🐕</span>
+        <div class="network-title">Rescue Centres</div>
+        <p class="network-desc">Safe intake facilities for strays and surrendered animals. Every admission is logged on-chain and triggers karma for the rescuer.</p>
+      </div>
+      <div class="network-card">
+        <span class="network-icon">🏥</span>
+        <div class="network-title">Veterinary Clinics</div>
+        <p class="network-desc">Full-service vet care at every location. Animals are assessed, vaccinated and treated before being placed for adoption.</p>
+      </div>
+      <div class="network-card">
+        <span class="network-icon">✨</span>
+        <div class="network-title">Healing Centres</div>
+        <p class="network-desc">Spaces for emotional and energetic recovery — deeply integrated with the Global Healing Network so anyone worldwide can send healing to animals in residence.</p>
+      </div>
+      <div class="network-card">
+        <span class="network-icon">🛁</span>
+        <div class="network-title">Day Care &amp; Grooming</div>
+        <p class="network-desc">Premium dog and cat day care, boarding and grooming. Revenue from day care helps fund rescues and keeps adoption fees low.</p>
+      </div>
+      <div class="network-card">
+        <span class="network-icon">🛍️</span>
+        <div class="network-title">Shops</div>
+        <p class="network-desc">Pet supplies, food, accessories and Noah's Ark ARN branded merchandise. A portion of every sale goes directly to rescue operations.</p>
+      </div>
+      <div class="network-card">
+        <span class="network-icon">🏡</span>
+        <div class="network-title">Adoption Centre</div>
+        <p class="network-desc">A welcoming space where prospective adopters meet rescued animals. Adoption triggers immediate karma via the OASIS Web4 API.</p>
+      </div>
+      <div class="network-card">
+        <span class="network-icon">🌿</span>
+        <div class="network-title">Wildlife Sanctuary</div>
+        <p class="network-desc">Safe habitat for injured and orphaned wild animals. Integrated with GHN so healers worldwide can send distance healing to sanctuary residents in recovery.</p>
+      </div>
+      <div class="network-card">
+        <span class="network-icon">📚</span>
+        <div class="network-title">Education Hub</div>
+        <p class="network-desc">Free resources, workshops and JLA-linked courses on responsible pet ownership, animal welfare and conscious coexistence with the natural world.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STRAY REPORTER -->
+<section class="section" id="strays">
+  <div class="section-kicker">REPORT A STRAY</div>
+  <h2 class="section-title">See a Stray? Alert Your Community</h2>
+  <span class="section-line"></span>
+  <p class="section-sub">Spotted stray cats or dogs in your area? Report them here and we'll instantly alert every Noah's Ark member and volunteer in your city so they can help rescue, care for or feed them while space is found.</p>
+
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1060px;margin:0 auto 48px">
+    <div style="background:var(--bg-card);border:1px solid rgba(0,232,124,.15);border-radius:16px;padding:28px 22px;text-align:center">
+      <div style="font-size:36px;margin-bottom:12px">📍</div>
+      <div style="font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;color:var(--green);letter-spacing:.08em;margin-bottom:10px">INSTANT LOCAL ALERT</div>
+      <p style="font-size:15px;color:#a8bfd8;line-height:1.65">Your report is broadcast to all volunteers, rescuers and foster carers registered in your city or area — within seconds.</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid rgba(240,165,0,.15);border-radius:16px;padding:28px 22px;text-align:center">
+      <div style="font-size:36px;margin-bottom:12px">🤝</div>
+      <div style="font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;color:var(--amber);letter-spacing:.08em;margin-bottom:10px">STREET CARE NETWORK</div>
+      <p style="font-size:15px;color:#a8bfd8;line-height:1.65">Volunteers coordinate to feed, shelter and care for strays on the street while a rescue centre place is arranged — no animal left without help.</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid rgba(255,95,160,.15);border-radius:16px;padding:28px 22px;text-align:center">
+      <div style="font-size:36px;margin-bottom:12px">⚡</div>
+      <div style="font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;color:#ff5fa0;letter-spacing:.08em;margin-bottom:10px">EARN KARMA FOR REPORTING</div>
+      <p style="font-size:15px;color:#a8bfd8;line-height:1.65">Every verified stray report earns you karma. If the animal is successfully rescued as a result of your report, you earn a rescue bonus too.</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid rgba(167,139,250,.15);border-radius:16px;padding:28px 22px;text-align:center">
+      <div style="font-size:36px;margin-bottom:12px">🗺️</div>
+      <div style="font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;color:var(--violet);letter-spacing:.08em;margin-bottom:10px">LIVE STRAY MAP</div>
+      <p style="font-size:15px;color:#a8bfd8;line-height:1.65">All active stray reports appear on a live community map so anyone in the area can see where help is needed and coordinate a response.</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid rgba(0,200,255,.15);border-radius:16px;padding:28px 22px;text-align:center">
+      <div style="font-size:36px;margin-bottom:12px">📸</div>
+      <div style="font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;color:var(--blue);letter-spacing:.08em;margin-bottom:10px">PHOTO EVIDENCE</div>
+      <p style="font-size:15px;color:#a8bfd8;line-height:1.65">Attach a photo to your report so rescuers can identify the animal instantly, assess its condition, and bring the right supplies when they arrive.</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid rgba(0,232,124,.15);border-radius:16px;padding:28px 22px;text-align:center">
+      <div style="font-size:36px;margin-bottom:12px">🔔</div>
+      <div style="font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;color:var(--green);letter-spacing:.08em;margin-bottom:10px">RESCUE UPDATES</div>
+      <p style="font-size:15px;color:#a8bfd8;line-height:1.65">Track the outcome of every stray you report. Get notified the moment a volunteer responds, a rescue is confirmed, or the animal finds a home.</p>
+    </div>
+  </div>
+
+  <div style="text-align:center">
+    <button class="btn-primary" id="btn-report-stray" style="border:none;cursor:pointer;font-size:15px">🐾 Report a Stray Animal</button>
+  </div>
+</section>
+
+<!-- STRAY REPORT MODAL -->
+<div id="stray-modal" style="display:none;position:fixed;inset:0;z-index:9000;background:rgba(3,7,20,.85);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:20px">
+  <div style="background:#0a1535;border:1px solid rgba(0,232,124,.25);border-radius:20px;padding:40px 36px;max-width:520px;width:100%;position:relative;max-height:90vh;overflow-y:auto">
+    <button id="stray-close" style="position:absolute;top:16px;right:18px;background:none;border:none;color:#a8bfd8;font-size:20px;cursor:pointer;line-height:1">✕</button>
+    <div style="font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;color:var(--green);letter-spacing:.12em;margin-bottom:10px">STRAY ALERT</div>
+    <h2 style="font-family:'Orbitron',sans-serif;font-size:20px;font-weight:700;color:#fff;margin:0 0 6px">Report a Stray Animal</h2>
+    <p style="font-size:15px;color:#a8bfd8;margin:0 0 28px;line-height:1.6">Your report alerts every volunteer and rescuer in your area immediately. The more detail you give, the faster we can help.</p>
+    <form id="stray-form" action="https://formsubmit.co/davidellams@hotmail.com" method="POST" style="display:flex;flex-direction:column;gap:14px">
+      <input type="hidden" name="_subject" value="Noah's Ark ARN — Stray Animal Report">
+      <input type="hidden" name="_captcha" value="false">
+      <input type="hidden" name="_template" value="table">
+      <div>
+        <label style="font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:.1em;color:#a8bfd8;display:block;margin-bottom:6px">YOUR NAME *</label>
+        <input type="text" name="name" required placeholder="Full name" style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(0,232,124,.2);border-radius:8px;padding:11px 14px;color:#fff;font-size:14px;outline:none;box-sizing:border-box">
+      </div>
+      <div>
+        <label style="font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:.1em;color:#a8bfd8;display:block;margin-bottom:6px">YOUR EMAIL *</label>
+        <input type="email" name="email" required placeholder="your@email.com" style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(0,232,124,.2);border-radius:8px;padding:11px 14px;color:#fff;font-size:14px;outline:none;box-sizing:border-box">
+      </div>
+      <div>
+        <label style="font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:.1em;color:#a8bfd8;display:block;margin-bottom:6px">ANIMAL TYPE *</label>
+        <select name="animal_type" required style="width:100%;background:#0a1535;border:1px solid rgba(0,232,124,.2);border-radius:8px;padding:11px 14px;color:#fff;font-size:14px;outline:none;box-sizing:border-box">
+          <option value="" disabled selected>Select animal type</option>
+          <option>Cat</option>
+          <option>Dog</option>
+          <option>Multiple cats</option>
+          <option>Multiple dogs</option>
+          <option>Mixed animals</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div>
+        <label style="font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:.1em;color:#a8bfd8;display:block;margin-bottom:6px">LOCATION / ADDRESS *</label>
+        <input type="text" name="location" required placeholder="Street, area, city and country" style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(0,232,124,.2);border-radius:8px;padding:11px 14px;color:#fff;font-size:14px;outline:none;box-sizing:border-box">
+      </div>
+      <div>
+        <label style="font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:.1em;color:#a8bfd8;display:block;margin-bottom:6px">CONDITION OF ANIMAL(S)</label>
+        <select name="condition" style="width:100%;background:#0a1535;border:1px solid rgba(0,232,124,.2);border-radius:8px;padding:11px 14px;color:#fff;font-size:14px;outline:none;box-sizing:border-box">
+          <option value="" disabled selected>How do they appear?</option>
+          <option>Looks healthy</option>
+          <option>Thin / needs food</option>
+          <option>Injured</option>
+          <option>Very sick — urgent</option>
+          <option>Unsure</option>
+        </select>
+      </div>
+      <div>
+        <label style="font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:.1em;color:#a8bfd8;display:block;margin-bottom:6px">ANY OTHER DETAILS</label>
+        <textarea name="details" rows="3" placeholder="Number of animals, behaviour, how long they've been there, any other info..." style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(0,232,124,.2);border-radius:8px;padding:11px 14px;color:#fff;font-size:14px;outline:none;box-sizing:border-box;resize:vertical"></textarea>
+      </div>
+      <button type="submit" class="btn-primary" style="border:none;cursor:pointer;margin-top:4px;font-size:15px">SEND ALERT 🐾</button>
+      <p id="stray-success" style="display:none;text-align:center;color:var(--green);font-family:'Share Tech Mono',monospace;font-size:12px;letter-spacing:.08em">✓ Alert sent! Volunteers in your area are being notified now.</p>
+    </form>
+  </div>
+</div>
+<script>
+(function(){
+  const btn=document.getElementById('btn-report-stray');
+  const modal=document.getElementById('stray-modal');
+  const close=document.getElementById('stray-close');
+  const form=document.getElementById('stray-form');
+  if(btn) btn.addEventListener('click',()=>{ modal.style.display='flex'; });
+  if(close) close.addEventListener('click',()=>{ modal.style.display='none'; });
+  modal.addEventListener('click',e=>{ if(e.target===modal) modal.style.display='none'; });
+  if(form) form.addEventListener('submit',async function(e){
+    e.preventDefault();
+    const submitBtn=form.querySelector('[type=submit]');
+    submitBtn.textContent='SENDING…';submitBtn.disabled=true;
+    try{
+      const res=await fetch(form.action,{method:'POST',body:new FormData(form),headers:{Accept:'application/json'}});
+      if(res.ok){
+        form.querySelectorAll('input,textarea,select,button[type=submit]').forEach(el=>el.style.display='none');
+        document.getElementById('stray-success').style.display='block';
+      } else { throw new Error(); }
+    } catch(_){
+      submitBtn.textContent='SEND ALERT 🐾';submitBtn.disabled=false;
+      alert('Something went wrong — please try again.');
+    }
+  });
+})();
+</script>
+
+<!-- COMMUNITY FORUM -->
+<section class="section" id="community" style="padding-top:0">
+  <div class="section-inner" style="max-width:900px;margin:0 auto">
+    <div style="background:linear-gradient(135deg,rgba(0,232,124,.06),rgba(240,165,0,.04),rgba(10,21,53,.98));border:1px solid rgba(0,232,124,.15);border-radius:20px;padding:48px 40px;text-align:center">
+      <div style="font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;color:var(--green);letter-spacing:.12em;margin-bottom:16px">FOR THE PEOPLE · BY THE PEOPLE</div>
+      <h2 style="font-family:'Orbitron',sans-serif;font-size:clamp(20px,3vw,28px);font-weight:700;color:#fff;margin:0 0 14px">Pet Community & Support Forum</h2>
+      <p style="font-size:15px;color:#a8bfd8;line-height:1.7;max-width:620px;margin:0 auto 28px">Share tips on caring for your new pet, get adoption advice from experienced owners, celebrate rescue stories, or ask for help. A friendly space for everyone who loves animals — all powered by the OASIS karma system so kindness is always rewarded.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:32px">
+        <span style="background:rgba(0,232,124,.08);border:1px solid rgba(0,232,124,.2);border-radius:999px;padding:6px 16px;font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--green)">ADOPTION ADVICE</span>
+        <span style="background:rgba(0,232,124,.08);border:1px solid rgba(0,232,124,.2);border-radius:999px;padding:6px 16px;font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--green)">PET CARE TIPS</span>
+        <span style="background:rgba(240,165,0,.08);border:1px solid rgba(240,165,0,.2);border-radius:999px;padding:6px 16px;font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--amber)">RESCUE STORIES</span>
+        <span style="background:rgba(240,165,0,.08);border:1px solid rgba(240,165,0,.2);border-radius:999px;padding:6px 16px;font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--amber)">VET QUESTIONS</span>
+        <span style="background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.2);border-radius:999px;padding:6px 16px;font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--violet)">LOST & FOUND</span>
+        <span style="background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.2);border-radius:999px;padding:6px 16px;font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--violet)">EARN KARMA FOR HELPING</span>
+      </div>
+      <a class="btn-primary" href="#" style="opacity:.6;cursor:not-allowed" title="Launching soon">Community Forum — Coming Soon</a>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="section" id="features">
+  <div class="section-kicker">PLATFORM FEATURES</div>
+  <h2 class="section-title">Built for Impact</h2>
+  <span class="section-line"></span>
+  <p class="section-sub">Every aspect of Noah's Ark ARN is designed to maximise the number of animals rescued and adopted — using blockchain transparency, gamified karma and global community.</p>
+  <div class="features-grid">
+    <div class="feature-card">
+      <span class="feature-icon">⛓️</span>
+      <div class="feature-title">On-Chain Verification</div>
+      <p class="feature-desc">Every rescue and adoption is logged immutably via the OASIS COSMIC ORM — transparent, tamper-proof and permanent.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🌍</span>
+      <div class="feature-title">Global Animal Registry</div>
+      <p class="feature-desc">Every animal in the network has a unique digital identity — breed, health history, rescue date, adoption status — all searchable worldwide.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">📊</span>
+      <div class="feature-title">Live Karma Leaderboards</div>
+      <p class="feature-desc">Real-time rankings of top rescuers and adopters by city, country and worldwide. Recognition drives action.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🔔</span>
+      <div class="feature-title">Smart Matching</div>
+      <p class="feature-desc">The platform learns adopter preferences and alerts them when a perfectly matched animal arrives at any centre in their region.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🗺️</span>
+      <div class="feature-title">Centre Finder</div>
+      <p class="feature-desc">Locate your nearest Noah's Ark ARN facility worldwide — with live availability, available animals and today's karma multipliers.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">💬</span>
+      <div class="feature-title">Community &amp; Stories</div>
+      <p class="feature-desc">Share adoption stories, post updates on your rescued pets and inspire others. Stories earn additional community karma.</p>
+    </div>
+  </div>
+</section>
+
+<!-- OASIS INTEGRATION -->
+<section class="section-full" style="background:linear-gradient(180deg,transparent,rgba(0,232,124,.03),transparent)">
+  <div class="section" style="padding-top:0;padding-bottom:0">
+    <div class="section-kicker">OASIS OMNIVERSE</div>
+    <h2 class="section-title">Powered by Web4</h2>
+    <span class="section-line"></span>
+    <p class="section-sub">Noah's Ark ARN is a first-party OASIS application — deeply integrated with the Web4 Karma API, the universal avatar system, OPORTAL and the wider OASIS Omniverse ecosystem.</p>
+
+    <div class="integration-band">
+      <h3>One Karma Score. Every World.</h3>
+      <p>Karma earned by rescuing or adopting an animal is the same karma that powers your avatar in Our World, OQuake, ODOOM and every app built on the STAR ODK. Compassion in the real world translates into power and status across the entire omniverse.</p>
+      <div class="pill-row">
+        <span class="pill">WEB4 KARMA API</span>
+        <span class="pill">OASIS AVATAR</span>
+        <span class="pill">COSMIC ORM</span>
+        <span class="pill amber">OPORTAL</span>
+        <span class="pill amber">OUR WORLD</span>
+        <span class="pill violet">STAR ODK</span>
+        <span class="pill violet">STARNET</span>
+        <span class="pill rose">GLOBAL HEALING NETWORK</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GLOBAL HEALING NETWORK TEASER -->
+<section class="section" id="healing">
+  <div class="section-kicker violet">NOW LIVE</div>
+  <h2 class="section-title">Global Healing Network</h2>
+  <span class="section-line violet"></span>
+  <p class="section-sub">Deeply integrated with Noah's Ark ARN — people worldwide can now send loving healing energy to pets and animals in need through the live Global Healing Network.</p>
+
+  <div class="healing-band">
+    <h3>Send Healing Energy to Animals in Need</h3>
+    <p>Every animal in a Noah's Ark ARN healing centre is listed on the Global Healing Network. Anyone, anywhere in the world can direct loving healing energy — emotional or physical — to a specific animal, a whole centre, or all animals in need globally. Healing sessions earn violet karma, a special class of karma reserved for the most compassionate acts in the OASIS ecosystem.</p>
+    <p>Whether an animal is recovering from injury, processing trauma from neglect, or simply needs love — the Global Healing Network amplifies the healing power of the global community and channels it to where it is needed most.</p>
+    <div class="pill-row" style="margin-bottom:28px">
+      <span class="pill violet">EMOTIONAL HEALING</span>
+      <span class="pill violet">PHYSICAL HEALING</span>
+      <span class="pill violet">VIOLET KARMA</span>
+      <span class="pill violet">LIVE ANIMAL LISTINGS</span>
+      <span class="pill violet">GLOBAL REACH</span>
+    </div>
+    <a class="btn-secondary" href="https://ghn.oasisomniverse.one" target="_blank" rel="noopener" style="border-color:rgba(167,139,250,.3);color:var(--violet)">Visit the Global Healing Network →</a>
+  </div>
+</section>
+
+<!-- DIGITAL PET -->
+<section class="section" id="digitalpet">
+  <div class="section-kicker">OUR WORLD INTEGRATION</div>
+  <h2 class="section-title">Your Pet Comes to Life in Our World</h2>
+  <span class="section-line"></span>
+  <p class="section-sub">Adopt a real animal through Noah's Ark ARN and they don't just join your family in the physical world — they become your loyal digital companion inside Our World, the OASIS metaverse.</p>
+
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px;max-width:1100px;margin:0 auto 48px">
+    <div style="background:var(--bg-card);border:1px solid rgba(0,232,124,.15);border-radius:16px;padding:28px 22px;text-align:center">
+      <div style="font-size:36px;margin-bottom:12px">🐕</div>
+      <div style="font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;color:var(--green);letter-spacing:.08em;margin-bottom:10px">YOUR REAL PET, DIGITALISED</div>
+      <p style="font-size:15px;color:#a8bfd8;line-height:1.65">When you adopt from Noah's Ark ARN, your pet's profile is linked to your OASIS avatar. They appear as a faithful digital companion that follows you through every world, quest and adventure.</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid rgba(240,165,0,.15);border-radius:16px;padding:28px 22px;text-align:center">
+      <div style="font-size:36px;margin-bottom:12px">⚔️</div>
+      <div style="font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;color:var(--amber);letter-spacing:.08em;margin-bottom:10px">FIGHT BY YOUR SIDE</div>
+      <p style="font-size:15px;color:#a8bfd8;line-height:1.65">Just like companions in World of Warcraft or Final Fantasy, your pet has unique abilities that grow as your bond strengthens. They help you on quests, protect you in combat and unlock hidden paths.</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid rgba(167,139,250,.15);border-radius:16px;padding:28px 22px;text-align:center">
+      <div style="font-size:36px;margin-bottom:12px">💜</div>
+      <div style="font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;color:var(--violet);letter-spacing:.08em;margin-bottom:10px">HAPPINESS BOND</div>
+      <p style="font-size:15px;color:#a8bfd8;line-height:1.65">The more love and care you give your real pet, the stronger your digital bond becomes. Log vet visits, playtime and feeding in Noah's Ark ARN and watch your companion grow more powerful in-world.</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid rgba(255,95,160,.15);border-radius:16px;padding:28px 22px;text-align:center">
+      <div style="font-size:36px;margin-bottom:12px">🌍</div>
+      <div style="font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;color:#ff5fa0;letter-spacing:.08em;margin-bottom:10px">ACROSS EVERY WORLD</div>
+      <p style="font-size:15px;color:#a8bfd8;line-height:1.65">Your companion travels with you across every game, app and experience built on the OASIS — from OQuake to ODOOM and beyond. One pet. Infinite adventures.</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid rgba(0,232,124,.15);border-radius:16px;padding:28px 22px;text-align:center">
+      <div style="font-size:36px;margin-bottom:12px">✨</div>
+      <div style="font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;color:var(--green);letter-spacing:.08em;margin-bottom:10px">UNIQUE APPEARANCE</div>
+      <p style="font-size:15px;color:#a8bfd8;line-height:1.65">Your digital pet is modelled on your actual animal — breed, colouring and personality all reflected in their in-world appearance. No two companions look the same.</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid rgba(240,165,0,.15);border-radius:16px;padding:28px 22px;text-align:center">
+      <div style="font-size:36px;margin-bottom:12px">🏆</div>
+      <div style="font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;color:var(--amber);letter-spacing:.08em;margin-bottom:10px">EARN KARMA TOGETHER</div>
+      <p style="font-size:15px;color:#a8bfd8;line-height:1.65">Complete quests with your companion and earn karma for both your avatar and your Noah's Ark ARN adoption profile. Your real-world compassion and in-world adventures are permanently linked.</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid rgba(0,200,255,.15);border-radius:16px;padding:28px 22px;text-align:center">
+      <div style="font-size:36px;margin-bottom:12px">🎓</div>
+      <div style="font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;color:var(--blue);letter-spacing:.08em;margin-bottom:10px">TEACH YOUR PET TRICKS</div>
+      <p style="font-size:15px;color:#a8bfd8;line-height:1.65">Train your digital companion with real skills mirrored from your physical pet's training. Every milestone you log unlocks new in-world abilities, animations and special moves.</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid rgba(167,139,250,.15);border-radius:16px;padding:28px 22px;text-align:center">
+      <div style="font-size:36px;margin-bottom:12px">🌟</div>
+      <div style="font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;color:var(--violet);letter-spacing:.08em;margin-bottom:10px">LEGENDARY STATUS</div>
+      <p style="font-size:15px;color:#a8bfd8;line-height:1.65">Long-term adopters unlock Legendary companion status — a rare glowing form that signals your commitment to animal welfare across every game and world on the OASIS.</p>
+    </div>
+  </div>
+
+  <div style="background:linear-gradient(135deg,rgba(0,232,124,.06),rgba(240,165,0,.04),rgba(10,21,53,.98));border:1px solid rgba(0,232,124,.15);border-radius:16px;padding:32px 36px;max-width:700px;margin:0 auto;text-align:center">
+    <div style="font-size:40px;margin-bottom:12px">🐾</div>
+    <p style="font-size:16px;color:#fff;font-family:'Orbitron',sans-serif;font-weight:700;margin:0 0 10px;font-size:clamp(15px,2vw,20px)">Adopt a real animal. Gain a legendary companion.</p>
+    <p style="font-size:14px;color:#a8bfd8;line-height:1.65;margin:0 0 24px">The bond you build in the physical world becomes power in the digital one. This is the first ever system that makes real-world compassion directly rewarded inside a metaverse — only on OASIS.</p>
+    <a class="btn-amber" href="#adopt">🐾 Adopt Now &amp; Unlock Your Companion</a>
+  </div>
+</section>
+
+<!-- FRANCHISE -->
+<section class="section-full" id="franchise" style="background:linear-gradient(180deg,transparent,rgba(0,232,124,.03),transparent)">
+  <div class="section" style="padding-top:0;padding-bottom:0">
+    <div class="section-kicker">OPEN A FRANCHISE</div>
+    <h2 class="section-title">Grow the Network</h2>
+    <span class="section-line"></span>
+    <p class="section-sub">Want to bring Noah's Ark ARN to your city? We provide everything you need to open and run a fully integrated franchise location — brand, technology, training and ongoing support.</p>
+    <div class="franchise-steps">
+      <div class="fstep">
+        <span class="fstep-num">01</span>
+        <span class="fstep-icon">📋</span>
+        <div class="fstep-title">Apply</div>
+        <p class="fstep-desc">Submit your franchise application with location details. Our team reviews all applications within 7 days.</p>
+      </div>
+      <div class="fstep">
+        <span class="fstep-num">02</span>
+        <span class="fstep-icon">🏗️</span>
+        <div class="fstep-title">Set Up</div>
+        <p class="fstep-desc">We provide build-out specifications, supplier contacts, equipment lists and full OASIS platform integration.</p>
+      </div>
+      <div class="fstep">
+        <span class="fstep-num">03</span>
+        <span class="fstep-icon">🎓</span>
+        <div class="fstep-title">Train</div>
+        <p class="fstep-desc">All staff are trained in animal welfare, the Noah's Ark ARN philosophy, karma verification and platform operations.</p>
+      </div>
+      <div class="fstep">
+        <span class="fstep-num">04</span>
+        <span class="fstep-icon">🌍</span>
+        <div class="fstep-title">Launch</div>
+        <p class="fstep-desc">Go live on the global network — your centre instantly accessible to the entire OASIS Omniverse community.</p>
+      </div>
+    </div>
+    <div style="text-align:center">
+      <button class="btn-primary" id="btn-franchise" style="border:none;cursor:pointer">Apply for a Franchise →</button>
+    </div>
+  </div>
+</section>
+
+<!-- FRANCHISE MODAL -->
+<div id="franchise-modal" style="display:none;position:fixed;inset:0;z-index:9000;background:rgba(3,7,20,.85);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:20px">
+  <div style="background:#0a1535;border:1px solid rgba(0,232,124,.25);border-radius:20px;padding:40px 36px;max-width:540px;width:100%;position:relative;max-height:90vh;overflow-y:auto">
+    <button id="franchise-close" style="position:absolute;top:16px;right:18px;background:none;border:none;color:#a8bfd8;font-size:20px;cursor:pointer;line-height:1">✕</button>
+    <div style="font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;color:var(--green);letter-spacing:.12em;margin-bottom:10px">OPEN A FRANCHISE</div>
+    <h2 style="font-family:'Orbitron',sans-serif;font-size:20px;font-weight:700;color:#fff;margin:0 0 6px">Franchise Application</h2>
+    <p style="font-size:15px;color:#a8bfd8;margin:0 0 28px;line-height:1.6">Tell us about yourself and your city. We review all applications within 7 days.</p>
+
+    <form id="franchise-form" action="https://formsubmit.co/davidellams@hotmail.com" method="POST" style="display:flex;flex-direction:column;gap:16px">
+      <input type="hidden" name="_subject" value="Noah's Ark ARN — Franchise Application">
+      <input type="hidden" name="_captcha" value="false">
+      <input type="hidden" name="_template" value="table">
+
+      <div>
+        <label style="font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:.1em;color:#a8bfd8;display:block;margin-bottom:6px">YOUR NAME *</label>
+        <input type="text" name="name" required placeholder="Full name" style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(0,232,124,.2);border-radius:8px;padding:11px 14px;color:#fff;font-size:14px;outline:none;box-sizing:border-box">
+      </div>
+      <div>
+        <label style="font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:.1em;color:#a8bfd8;display:block;margin-bottom:6px">YOUR EMAIL *</label>
+        <input type="email" name="email" required placeholder="your@email.com" style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(0,232,124,.2);border-radius:8px;padding:11px 14px;color:#fff;font-size:14px;outline:none;box-sizing:border-box">
+      </div>
+      <div>
+        <label style="font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:.1em;color:#a8bfd8;display:block;margin-bottom:6px">CITY & COUNTRY *</label>
+        <input type="text" name="location" required placeholder="e.g. Manchester, UK" style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(0,232,124,.2);border-radius:8px;padding:11px 14px;color:#fff;font-size:14px;outline:none;box-sizing:border-box">
+      </div>
+      <div>
+        <label style="font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:.1em;color:#a8bfd8;display:block;margin-bottom:6px">PHONE (OPTIONAL)</label>
+        <input type="tel" name="phone" placeholder="+44 7700 000000" style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(0,232,124,.2);border-radius:8px;padding:11px 14px;color:#fff;font-size:14px;outline:none;box-sizing:border-box">
+      </div>
+      <div>
+        <label style="font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:.1em;color:#a8bfd8;display:block;margin-bottom:6px">TELL US ABOUT YOURSELF & YOUR PLANS *</label>
+        <textarea name="message" required rows="4" placeholder="Your background, why you want to open a Noah's Ark centre, any relevant experience..." style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(0,232,124,.2);border-radius:8px;padding:11px 14px;color:#fff;font-size:14px;outline:none;box-sizing:border-box;resize:vertical"></textarea>
+      </div>
+
+      <button type="submit" class="btn-primary" style="border:none;cursor:pointer;margin-top:4px;font-size:15px">SUBMIT APPLICATION →</button>
+      <p id="franchise-success" style="display:none;text-align:center;color:var(--green);font-family:'Share Tech Mono',monospace;font-size:12px;letter-spacing:.08em">✓ Application sent! We'll be in touch within 7 days.</p>
+    </form>
+  </div>
+</div>
+
+<script>
+(function(){
+  const btn=document.getElementById('btn-franchise');
+  const modal=document.getElementById('franchise-modal');
+  const close=document.getElementById('franchise-close');
+  const form=document.getElementById('franchise-form');
+  if(btn) btn.addEventListener('click',()=>{ modal.style.display='flex'; });
+  if(close) close.addEventListener('click',()=>{ modal.style.display='none'; });
+  modal.addEventListener('click',e=>{ if(e.target===modal) modal.style.display='none'; });
+  if(form) form.addEventListener('submit',async function(e){
+    e.preventDefault();
+    const data=new FormData(form);
+    const submitBtn=form.querySelector('[type=submit]');
+    submitBtn.textContent='SENDING…';submitBtn.disabled=true;
+    try{
+      const res=await fetch(form.action,{method:'POST',body:data,headers:{Accept:'application/json'}});
+      if(res.ok){
+        form.querySelectorAll('input,textarea,button[type=submit]').forEach(el=>el.style.display='none');
+        document.getElementById('franchise-success').style.display='block';
+      } else { throw new Error(); }
+    } catch(_){
+      submitBtn.textContent='SUBMIT APPLICATION →';submitBtn.disabled=false;
+      alert('Something went wrong — please try again or email us directly.');
+    }
+  });
+})();
+</script>
+
+<!-- CTA -->
+<section class="cta-band" id="adopt">
+  <div class="cta-inner">
+    <h2>Ready to make a<br><em>difference</em>?</h2>
+    <p>Rescue an animal. Adopt a friend. Earn karma. Every action you take is recorded forever on the OASIS blockchain — a permanent testament to your compassion.</p>
+    <div class="cta-buttons">
+      <a class="btn-amber" href="#">🐾 Find an Animal to Adopt</a>
+      <a class="btn-primary" href="#">Find Your Nearest Centre</a>
+      <a class="btn-secondary" href="https://oportal.oasisomniverse.one" target="_blank" rel="noopener">Create Your Avatar</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">NOAH'S ARK <span>ANIMAL RESCUE NETWORK</span></div>
+  <p class="footer-tagline">Every stray deserves a loving home — powered by the OASIS Web4 Karma API</p>
+  <ul class="footer-links">
+    <li><a href="#mission">Mission</a></li>
+    <li><a href="#karma">Karma</a></li>
+    <li><a href="#network">Network</a></li>
+    <li><a href="#healing">Healing</a></li>
+    <li><a href="#franchise">Franchise</a></li>
+    <li><a href="https://oasisomniverse.one" target="_blank" rel="noopener">OASIS Omniverse</a></li>
+    <li><a href="https://api.web4.oasisomniverse.one" target="_blank" rel="noopener">Web4 API</a></li>
+  </ul>
+  <p class="footer-legal">Part of the <a href="https://oasisomniverse.one" target="_blank" rel="noopener">OASIS Omniverse</a> ecosystem &nbsp;·&nbsp; <a href="https://github.com/NextGenSoftwareUK/OASIS" target="_blank" rel="noopener">GitHub</a></p>
+</footer>
+
+<script>
+// ── STAR CANVAS ──
+(function(){
+  const c=document.getElementById('star-canvas');
+  const ctx=c.getContext('2d');
+  let W,H,stars=[];
+  function resize(){W=c.width=window.innerWidth;H=c.height=window.innerHeight;stars=[];for(let i=0;i<220;i++)stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.1+.2,a:Math.random(),s:Math.random()*.004+.001})}
+  function draw(){ctx.clearRect(0,0,W,H);stars.forEach(s=>{s.a+=s.s;if(s.a>1||s.a<0)s.s*=-1;ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle=`rgba(200,225,255,${s.a*.7})`;ctx.fill()});requestAnimationFrame(draw)}
+  window.addEventListener('resize',resize);resize();draw();
+})();
+
+// ── NAV TOGGLE ──
+(function(){
+  const toggle=document.getElementById('nav-toggle');
+  const links=document.getElementById('nav-links');
+  toggle.addEventListener('click',()=>{toggle.classList.toggle('open');links.classList.toggle('open')});
+  links.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{toggle.classList.remove('open');links.classList.remove('open')}));
+})();
+
+// ── HERO CANVAS: global network with paw pulses ──
+(function(){
+  const cv=document.getElementById('narn-canvas');
+  if(!cv)return;
+  const ctx=cv.getContext('2d');
+
+  const GREEN='#00e87c',AMBER='#f0a500',ROSE='#ff5fa0',VIOLET='#a78bfa';
+  const nodeColors=[GREEN,AMBER,ROSE,GREEN,AMBER,VIOLET];
+  const nodeLabels=['LONDON','TOKYO','NYC','SYDNEY','DUBAI','BERLIN'];
+  const nodeIcons=['🐕','🐈','🐾','🐕','🐈','🐾'];
+  const angles=[0,60,120,180,240,300].map(a=>a*Math.PI/180);
+
+  let W,H,cx,cy,hub,nodes,scale;
+  function resize(){
+    W=cv.parentElement.clientWidth||innerWidth;
+    H=Math.round(W*1.04);
+    cv.width=W;cv.height=H;
+    cx=W/2;cy=H/2;
+    scale=Math.min(W,H)/780;
+    const hubR=Math.round(52*scale);
+    const dist=Math.round(155*scale);
+    const nodeR=Math.round(32*scale);
+    hub={x:cx,y:cy,r:hubR,color:GREEN};
+    nodes=angles.map((a,i)=>({
+      x:cx+Math.cos(a)*dist,y:cy+Math.sin(a)*dist,
+      r:nodeR,label:nodeLabels[i],icon:nodeIcons[i],color:nodeColors[i]
+    }));
+  }
+  resize();
+  window.addEventListener('resize',resize);
+
+  // Pulses
+  const pulses=[];
+  function spawnPulse(){
+    const from=Math.random()<.5?'hub':'node';
+    const ni=Math.floor(Math.random()*nodes.length);
+    if(from==='hub'){pulses.push({ni,t:0,dir:1,color:[GREEN,AMBER,ROSE][ni%3]})}
+    else{pulses.push({ni,t:1,dir:-1,color:[GREEN,AMBER,VIOLET][ni%3]})}
+  }
+  for(let i=0;i<6;i++){setTimeout(()=>spawnPulse(),i*400)}
+  setInterval(spawnPulse,600);
+
+
+  let t=0;
+  function draw(){
+    t++;
+    ctx.clearRect(0,0,W,H);
+
+    // Draw connections
+    nodes.forEach(n=>{
+      ctx.beginPath();ctx.moveTo(hub.x,hub.y);ctx.lineTo(n.x,n.y);
+      ctx.strokeStyle='rgba(0,232,124,.12)';ctx.lineWidth=1.5;ctx.stroke();
+    });
+
+    // Draw hub glow
+    const hpulse=0.5+0.5*Math.sin(t*0.05);
+    const hgrd=ctx.createRadialGradient(hub.x,hub.y,0,hub.x,hub.y,hub.r+20*hpulse);
+    hgrd.addColorStop(0,'rgba(0,232,124,.22)');hgrd.addColorStop(1,'transparent');
+    ctx.fillStyle=hgrd;ctx.beginPath();ctx.arc(hub.x,hub.y,hub.r+20*hpulse,0,Math.PI*2);ctx.fill();
+
+    // Draw hub
+    ctx.beginPath();ctx.arc(hub.x,hub.y,hub.r,0,Math.PI*2);
+    ctx.fillStyle='rgba(10,21,53,.96)';ctx.fill();
+    ctx.strokeStyle=GREEN;ctx.lineWidth=2;ctx.stroke();
+    const fs=Math.round(22*scale),ts=Math.round(11*scale),ss=Math.round(8*scale);
+    ctx.fillStyle=GREEN;ctx.font=`bold ${fs}px Orbitron,sans-serif`;ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText('🐾',hub.x,hub.y-Math.round(14*scale));
+    ctx.font=`bold ${ts}px Orbitron,sans-serif`;ctx.fillText('NOAH\'S ARK',hub.x,hub.y+Math.round(8*scale));
+    ctx.fillStyle='rgba(0,232,124,.6)';ctx.font=`${ss}px Share Tech Mono,monospace`;ctx.fillText('GLOBAL HUB',hub.x,hub.y+Math.round(22*scale));
+
+    // Draw nodes
+    nodes.forEach(n=>{
+      ctx.beginPath();ctx.arc(n.x,n.y,n.r,0,Math.PI*2);
+      ctx.fillStyle='rgba(10,21,53,.96)';ctx.fill();
+      ctx.strokeStyle=n.color;ctx.lineWidth=1.5;ctx.stroke();
+      ctx.fillStyle='#fff';ctx.font=`${Math.round(20*scale)}px serif`;ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillText(n.icon,n.x,n.y-Math.round(5*scale));
+      ctx.fillStyle=n.color;ctx.font=`${Math.round(8*scale)}px Orbitron,sans-serif`;ctx.fillText(n.label,n.x,n.y+Math.round(16*scale));
+    });
+
+    // Draw pulses
+    for(let i=pulses.length-1;i>=0;i--){
+      const p=pulses[i];
+      p.t+=p.dir*0.012;
+      if(p.t<0||p.t>1){pulses.splice(i,1);continue}
+      const n=nodes[p.ni];
+      const px=hub.x+(n.x-hub.x)*p.t;
+      const py=hub.y+(n.y-hub.y)*p.t;
+      const fade=Math.min(p.t*6,1)*Math.min((1-p.t)*6,1);
+      ctx.beginPath();ctx.arc(px,py,5,0,Math.PI*2);
+      ctx.fillStyle=p.color.replace(')',`,${fade})`).replace('rgb','rgba').replace('#00e87c',`rgba(0,232,124,${fade})`).replace('#f0a500',`rgba(240,165,0,${fade})`).replace('#ff5fa0',`rgba(255,95,160,${fade})`).replace('#a78bfa',`rgba(167,139,250,${fade})`);
+      // simple glow
+      const grd2=ctx.createRadialGradient(px,py,0,px,py,10);
+      grd2.addColorStop(0,p.color==='#00e87c'?`rgba(0,232,124,${fade})`:(p.color==='#f0a500'?`rgba(240,165,0,${fade})`:`rgba(255,95,160,${fade})`));
+      grd2.addColorStop(1,'transparent');
+      ctx.fillStyle=grd2;ctx.beginPath();ctx.arc(px,py,10,0,Math.PI*2);ctx.fill();
+      ctx.beginPath();ctx.arc(px,py,4,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill();
+    }
+
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ── MISSION CANVAS: orbiting animals ──
+(function(){
+  const cv=document.getElementById('mission-canvas');
+  if(!cv)return;
+  const ctx=cv.getContext('2d');
+  const W=480,H=480;
+  cv.width=W;cv.height=H;
+  const cx=W/2,cy=H/2;
+
+  const orbiters=[
+    {angle:0,speed:.012,r:140,icon:'🐕',size:26},
+    {angle:Math.PI*.4,speed:.009,r:140,icon:'🐈',size:26},
+    {angle:Math.PI*.8,speed:.011,r:140,icon:'🐇',size:22},
+    {angle:Math.PI*1.2,speed:.013,r:140,icon:'🦜',size:22},
+    {angle:Math.PI*1.6,speed:.01,r:140,icon:'🐹',size:20},
+    {angle:Math.PI*2.0,speed:.008,r:140,icon:'🐕',size:24},
+    // inner ring
+    {angle:.5,speed:-.015,r:80,icon:'❤️',size:18},
+    {angle:.5+Math.PI,speed:-.015,r:80,icon:'💚',size:18},
+    {angle:.5+Math.PI*.7,speed:-.013,r:80,icon:'⭐',size:16},
+  ];
+
+  let t=0;
+  function draw(){
+    t++;
+    ctx.clearRect(0,0,W,H);
+
+    // Orbit rings
+    [80,140].forEach((r,i)=>{
+      ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);
+      ctx.strokeStyle=i===0?'rgba(0,232,124,.15)':'rgba(0,232,124,.1)';
+      ctx.lineWidth=1;ctx.setLineDash([4,8]);ctx.stroke();ctx.setLineDash([]);
+    });
+
+    // Centre pulsing heart
+    const pulse=0.5+0.5*Math.sin(t*.05);
+    const grd=ctx.createRadialGradient(cx,cy,0,cx,cy,60+10*pulse);
+    grd.addColorStop(0,'rgba(0,232,124,.18)');grd.addColorStop(.5,'rgba(240,165,0,.08)');grd.addColorStop(1,'transparent');
+    ctx.fillStyle=grd;ctx.beginPath();ctx.arc(cx,cy,60+10*pulse,0,Math.PI*2);ctx.fill();
+
+    ctx.font='52px serif';ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText('🐾',cx,cy-4);
+
+    // Orbiters
+    orbiters.forEach(o=>{
+      o.angle+=o.speed;
+      const ox=cx+Math.cos(o.angle)*o.r;
+      const oy=cy+Math.sin(o.angle)*o.r;
+      ctx.font=`${o.size}px serif`;ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillText(o.icon,ox,oy);
+    });
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+</script>
+
+<!-- ── WEB4 API INTEGRATION ── -->
+<style>
+/* Connect button in nav */
+.av-connect-btn{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:.1em;color:#a8bfd8;border:1px solid rgba(255,255,255,.15);border-radius:999px;padding:8px 16px;background:none;cursor:pointer;transition:all .2s;margin-left:10px;white-space:nowrap}
+.av-connect-btn:hover{border-color:rgba(0,232,124,.5);color:var(--green)}
+.av-connected-badge{display:none;align-items:center;gap:10px;margin-left:10px;font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:.1em}
+.av-connected-badge.show{display:flex}
+.av-avatar-name{color:#fff;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.av-karma-pill{background:rgba(0,232,124,.12);border:1px solid rgba(0,232,124,.3);border-radius:999px;padding:5px 12px;color:var(--green);font-size:10px;letter-spacing:.12em;cursor:pointer}
+.av-karma-pill:hover{background:rgba(0,232,124,.22)}
+.av-logout-btn{color:#a8bfd8;background:none;border:none;cursor:pointer;font-size:14px;opacity:.6;transition:opacity .2s;padding:0 4px}
+.av-logout-btn:hover{opacity:1}
+
+/* Modal overlay */
+.av-modal-overlay{position:fixed;inset:0;z-index:999;background:rgba(3,7,20,.82);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s}
+.av-modal-overlay.open{opacity:1;pointer-events:all}
+.av-modal-box{background:#0a1535;border:1px solid rgba(0,232,124,.2);border-radius:20px;padding:40px 36px;width:min(420px,92vw);position:relative;transform:translateY(20px);transition:transform .3s}
+.av-modal-overlay.open .av-modal-box{transform:translateY(0)}
+.av-modal-close{position:absolute;top:16px;right:18px;background:none;border:none;color:#a8bfd8;font-size:20px;cursor:pointer;opacity:.6;transition:opacity .2s}
+.av-modal-close:hover{opacity:1}
+.av-modal-kicker{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:.28em;color:var(--green);margin-bottom:12px}
+.av-modal-title{font-family:'Orbitron',sans-serif;font-size:20px;font-weight:900;letter-spacing:.06em;color:#fff;margin-bottom:6px}
+.av-modal-sub{font-size:14px;color:#a8bfd8;margin-bottom:28px;line-height:1.6}
+.av-field{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(0,232,124,.15);border-radius:10px;padding:13px 16px;color:#fff;font-family:'Rajdhani',sans-serif;font-size:15px;outline:none;transition:border-color .2s;margin-bottom:14px}
+.av-field:focus{border-color:rgba(0,232,124,.45)}
+.av-field::placeholder{color:#6a80a8}
+.av-submit-btn{width:100%;font-family:'Share Tech Mono',monospace;font-size:12px;letter-spacing:.14em;color:#fff;background:linear-gradient(135deg,rgba(0,232,124,.3),rgba(0,232,124,.12));border:1px solid rgba(0,232,124,.5);border-radius:999px;padding:14px;cursor:pointer;transition:all .25s;margin-top:4px}
+.av-submit-btn:hover:not(:disabled){background:linear-gradient(135deg,rgba(0,232,124,.45),rgba(0,232,124,.22));box-shadow:0 0 28px rgba(0,232,124,.3)}
+.av-submit-btn:disabled{opacity:.5;cursor:not-allowed}
+.av-error{font-size:15px;color:#ff5fa0;margin-top:8px;min-height:18px;text-align:center}
+.av-modal-footer{font-size:12px;color:#a8bfd8;text-align:center;margin-top:16px}
+.av-modal-footer a{color:var(--green);text-decoration:none}
+
+/* Karma toast */
+.karma-toast{position:fixed;bottom:32px;right:32px;z-index:9999;background:#0a1535;border:1px solid rgba(0,232,124,.35);border-radius:14px;padding:16px 22px;display:flex;align-items:center;gap:14px;box-shadow:0 8px 40px rgba(0,0,0,.5);transform:translateY(80px);opacity:0;transition:transform .35s,opacity .35s;pointer-events:none}
+.karma-toast.show{transform:translateY(0);opacity:1}
+.kt-icon{font-size:28px}
+.kt-body{}
+.kt-label{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:.18em;color:#a8bfd8;display:block}
+.kt-amount{font-family:'Orbitron',sans-serif;font-size:22px;font-weight:900;color:var(--green);letter-spacing:.04em;display:block}
+
+/* Action panels */
+.karma-actions{max-width:700px;margin:40px auto 0;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.karma-action-card{background:var(--bg-card);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:24px;text-align:center;transition:border-color .3s}
+.karma-action-card.rescue-action{border-color:rgba(0,232,124,.15)}
+.karma-action-card.adopt-action{border-color:rgba(240,165,0,.15)}
+.karma-action-title{font-family:'Orbitron',sans-serif;font-size:12px;font-weight:700;letter-spacing:.1em;margin-bottom:8px}
+.karma-action-card.rescue-action .karma-action-title{color:var(--green)}
+.karma-action-card.adopt-action .karma-action-title{color:var(--amber)}
+.karma-action-desc{font-size:15px;color:#a8bfd8;margin-bottom:16px;line-height:1.5}
+.karma-action-btn{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:.12em;border-radius:999px;padding:10px 20px;border:1px solid;cursor:pointer;transition:all .25s;width:100%;background:transparent}
+.rescue-action .karma-action-btn{color:var(--green);border-color:rgba(0,232,124,.4)}
+.rescue-action .karma-action-btn:hover:not(:disabled){background:rgba(0,232,124,.1);box-shadow:0 0 20px rgba(0,232,124,.2)}
+.adopt-action .karma-action-btn{color:var(--amber);border-color:rgba(240,165,0,.4)}
+.adopt-action .karma-action-btn:hover:not(:disabled){background:rgba(240,165,0,.1);box-shadow:0 0 20px rgba(240,165,0,.2)}
+.karma-action-btn:disabled{opacity:.4;cursor:not-allowed}
+.karma-action-btn.loading{opacity:.7}
+.needs-login-note{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:.14em;color:#6a80a8;text-align:center;margin-top:14px}
+@media(max-width:520px){.karma-actions{grid-template-columns:1fr}.karma-toast{bottom:16px;right:16px;left:16px}}
+</style>
+
+<!-- Connect modal -->
+<div class="av-modal-overlay" id="av-modal">
+  <div class="av-modal-box">
+    <button class="av-modal-close" id="av-modal-close">✕</button>
+    <div class="av-modal-kicker">OASIS WEB4 API</div>
+    <div class="av-modal-title">Connect Your Avatar</div>
+    <p class="av-modal-sub">Sign in with your OASIS avatar to earn karma for rescues and adoptions — recorded permanently on the blockchain.</p>
+    <input class="av-field" id="av-username" type="email" placeholder="Email address" autocomplete="username">
+    <input class="av-field" id="av-password" type="password" placeholder="Password" autocomplete="current-password">
+    <button class="av-submit-btn" id="av-login-btn">CONNECT AVATAR →</button>
+    <div class="av-error" id="av-error"></div>
+    <p class="av-modal-footer">No avatar? <a href="https://oportal.oasisomniverse.one" target="_blank" rel="noopener">Create one free at OPORTAL →</a></p>
+  </div>
+</div>
+
+<!-- Karma toast -->
+<div class="karma-toast" id="karma-toast">
+  <span class="kt-icon" id="kt-icon">🐾</span>
+  <div class="kt-body">
+    <span class="kt-label" id="kt-label">KARMA EARNED</span>
+    <span class="kt-amount" id="kt-amount">+500</span>
+  </div>
+</div>
+
+<!-- Karma action buttons (injected into page after karma-steps) -->
+<script>
+(function(){
+  // Inject the action panel after #karma section's .karma-steps
+  const steps = document.querySelector('.karma-steps');
+  if(!steps) return;
+  const panel = document.createElement('div');
+  panel.className = 'karma-actions';
+  panel.id = 'karma-action-panel';
+  panel.innerHTML = `
+    <div class="karma-action-card rescue-action">
+      <div class="karma-action-title">🐾 RECORD A RESCUE</div>
+      <p class="karma-action-desc">Brought a stray animal to a Noah's Ark ARN centre? Log it here and earn karma instantly.</p>
+      <button class="karma-action-btn" id="btn-rescue" disabled>CONNECT AVATAR TO EARN</button>
+    </div>
+    <div class="karma-action-card adopt-action">
+      <div class="karma-action-title">🏡 RECORD AN ADOPTION</div>
+      <p class="karma-action-desc">Just adopted a rescue animal? Log your adoption and earn 3× the karma of a rescue.</p>
+      <button class="karma-action-btn" id="btn-adopt" disabled>CONNECT AVATAR TO EARN</button>
+    </div>
+  `;
+  steps.after(panel);
+  const note = document.createElement('p');
+  note.className = 'needs-login-note';
+  note.id = 'login-note';
+  note.textContent = 'Connect your OASIS avatar above to log rescues and adoptions';
+  panel.after(note);
+})();
+</script>
+
+<script type="module">
+import { OASISClient } from 'https://esm.sh/@oasisomniverse/web4-api@2.0.2';
+
+const BASE_URL = 'https://api.web4.oasisomniverse.one';
+const oasis = new OASISClient({ baseUrl: BASE_URL, persistSession: true });
+
+// ── State ──
+let session = null;
+let avatarKarma = 0;
+
+// ── DOM refs ──
+const modal       = document.getElementById('av-modal');
+const modalClose  = document.getElementById('av-modal-close');
+const usernameEl  = document.getElementById('av-username');
+const passwordEl  = document.getElementById('av-password');
+const loginBtn    = document.getElementById('av-login-btn');
+const errorEl     = document.getElementById('av-error');
+const toast       = document.getElementById('karma-toast');
+const toastIcon   = document.getElementById('kt-icon');
+const toastLabel  = document.getElementById('kt-label');
+const toastAmount = document.getElementById('kt-amount');
+
+// ── Inject connect button into nav ──
+const navCta = document.querySelector('.nav-cta');
+if(navCta){
+  const connectBtn = document.createElement('button');
+  connectBtn.className = 'av-connect-btn';
+  connectBtn.id = 'av-connect-btn';
+  connectBtn.textContent = '⬡ CONNECT AVATAR';
+  navCta.closest('.nav-right').appendChild(connectBtn);
+  connectBtn.addEventListener('click', openModal);
+
+  const badge = document.createElement('div');
+  badge.className = 'av-connected-badge';
+  badge.id = 'av-badge';
+  badge.innerHTML = `
+    <span class="av-avatar-name" id="av-avatar-name">—</span>
+    <span class="av-karma-pill" id="av-karma-pill" title="Your karma score">✦ 0</span>
+    <button class="av-logout-btn" id="av-logout-btn" title="Disconnect">✕</button>
+  `;
+  navCta.closest('.nav-right').appendChild(badge);
+  document.getElementById('av-logout-btn').addEventListener('click', logout);
+  document.getElementById('av-karma-pill').addEventListener('click', refreshKarma);
+}
+
+// ── Modal open/close ──
+function openModal(){ modal.classList.add('open'); usernameEl.focus(); }
+function closeModal(){ modal.classList.remove('open'); errorEl.textContent=''; }
+modalClose.addEventListener('click', closeModal);
+modal.addEventListener('click', e=>{ if(e.target===modal) closeModal(); });
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
+
+// ── Login ──
+loginBtn.addEventListener('click', doLogin);
+[usernameEl, passwordEl].forEach(el => el.addEventListener('keydown', e=>{ if(e.key==='Enter') doLogin(); }));
+
+async function doLogin(){
+  const username = usernameEl.value.trim();
+  const password = passwordEl.value;
+  if(!username || !password){ errorEl.textContent='Please enter your email and password.'; return; }
+  loginBtn.disabled = true; loginBtn.textContent = 'CONNECTING…'; errorEl.textContent = '';
+  try {
+    const res = await oasis.auth.login({ username, password });
+    if(res.isError){ throw new Error(res.message || 'Login failed'); }
+    session = res.session || res.result;
+    closeModal();
+    await onConnected();
+  } catch(err){
+    errorEl.textContent = err.message || 'Could not connect. Please check your credentials.';
+  } finally {
+    loginBtn.disabled = false; loginBtn.textContent = 'CONNECT AVATAR →';
+  }
+}
+
+// ── On connected ──
+async function onConnected(){
+  document.getElementById('av-connect-btn').style.display = 'none';
+  document.getElementById('av-badge').classList.add('show');
+  const name = session?.avatarUsername || session?.username || session?.firstName || 'Avatar';
+  document.getElementById('av-avatar-name').textContent = name;
+  await refreshKarma();
+  enableActionButtons();
+}
+
+async function refreshKarma(){
+  if(!session) return;
+  try {
+    const res = await oasis.karma.getKarmaForAvatar({ avatarId: session.avatarId });
+    if(!res.isError){
+      avatarKarma = res.result?.karmaTotal ?? res.result ?? avatarKarma;
+      document.getElementById('av-karma-pill').textContent = `✦ ${avatarKarma.toLocaleString()}`;
+    }
+  } catch(_){}
+}
+
+// ── Enable action buttons ──
+function enableActionButtons(){
+  const rescueBtn = document.getElementById('btn-rescue');
+  const adoptBtn  = document.getElementById('btn-adopt');
+  const note      = document.getElementById('login-note');
+  if(note) note.style.display = 'none';
+  if(rescueBtn){ rescueBtn.disabled = false; rescueBtn.textContent = '🐾 RECORD RESCUE (+500 KARMA)'; }
+  if(adoptBtn){ adoptBtn.disabled = false; adoptBtn.textContent = '🏡 RECORD ADOPTION (+1,500 KARMA)'; }
+  if(rescueBtn) rescueBtn.addEventListener('click', ()=> earnKarma('rescue'));
+  if(adoptBtn)  adoptBtn.addEventListener('click',  ()=> earnKarma('adopt'));
+}
+
+// ── Earn karma ──
+async function earnKarma(type){
+  if(!session) return;
+  const isAdopt = type === 'adopt';
+  const btn = document.getElementById(isAdopt ? 'btn-adopt' : 'btn-rescue');
+  const karmaAmount = isAdopt ? 1500 : 500;
+  const karmaSource = isAdopt ? 'AdoptAnimal' : 'RescueAnimal';
+  const karmaTitle  = isAdopt ? 'Adopted a Rescue Animal' : 'Rescued an Animal';
+  const karmaDesc   = isAdopt
+    ? 'Gave a rescued animal a permanent loving home through Noah\'s Ark ARN'
+    : 'Found a stray animal and brought them to a Noah\'s Ark ARN rescue centre';
+
+  btn.disabled = true; btn.classList.add('loading');
+  btn.textContent = 'RECORDING…';
+  try {
+    const res = await oasis.avatar.addKarmaToAvatar({
+      avatarId: session.avatarId,
+      karmaSource,
+      karmaSourceTitle: karmaTitle,
+      karmaSourceDesc:  karmaDesc,
+      karmaAmount,
+    });
+    if(res.isError) throw new Error(res.message || 'Could not award karma');
+    avatarKarma += karmaAmount;
+    document.getElementById('av-karma-pill').textContent = `✦ ${avatarKarma.toLocaleString()}`;
+    showToast(isAdopt ? '🏡' : '🐾', isAdopt ? 'ADOPTION RECORDED' : 'RESCUE RECORDED', `+${karmaAmount.toLocaleString()}`);
+    btn.textContent = isAdopt ? '✓ ADOPTION LOGGED' : '✓ RESCUE LOGGED';
+    setTimeout(()=>{ btn.disabled=false; btn.classList.remove('loading'); btn.textContent = isAdopt ? '🏡 RECORD ANOTHER ADOPTION (+1,500 KARMA)' : '🐾 RECORD ANOTHER RESCUE (+500 KARMA)'; }, 3000);
+  } catch(err){
+    showToast('⚠️','ERROR', err.message || 'Please try again');
+    btn.disabled=false; btn.classList.remove('loading');
+    btn.textContent = isAdopt ? '🏡 RECORD ADOPTION (+1,500 KARMA)' : '🐾 RECORD RESCUE (+500 KARMA)';
+  }
+}
+
+// ── Logout ──
+function logout(){
+  oasis.auth.logout().catch(()=>{});
+  session = null; avatarKarma = 0;
+  document.getElementById('av-connect-btn').style.display = '';
+  document.getElementById('av-badge').classList.remove('show');
+  const rescueBtn = document.getElementById('btn-rescue');
+  const adoptBtn  = document.getElementById('btn-adopt');
+  const note      = document.getElementById('login-note');
+  if(rescueBtn){ rescueBtn.disabled=true; rescueBtn.textContent='CONNECT AVATAR TO EARN'; }
+  if(adoptBtn){  adoptBtn.disabled=true;  adoptBtn.textContent='CONNECT AVATAR TO EARN'; }
+  if(note) note.style.display='';
+}
+
+// ── Toast ──
+let toastTimer;
+function showToast(icon, label, amount){
+  toastIcon.textContent  = icon;
+  toastLabel.textContent = label;
+  toastAmount.textContent = amount;
+  toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=> toast.classList.remove('show'), 3500);
+}
+
+// ── Check persisted session on load ──
+(async ()=>{
+  try {
+    const auth = await oasis.auth.isAuthenticated();
+    if(auth?.isAuthenticated || auth?.result?.isAuthenticated){
+      session = auth.session || auth.result?.session || auth.result;
+      if(session?.avatarId) await onConnected();
+    }
+  } catch(_){}
+})();
+</script>
+</body>
+</html>
