@@ -1242,12 +1242,12 @@ footer{position:relative;z-index:1;border-top:1px solid rgba(0,232,124,.1);paddi
     <div class="karma-action-card rescue-action">
       <div class="karma-action-title">🐾 RECORD A RESCUE</div>
       <p class="karma-action-desc">Brought a stray animal to a Noah's Ark ARN centre? Log it here and earn karma instantly.</p>
-      <button class="karma-action-btn" id="btn-rescue" disabled>CONNECT AVATAR TO EARN</button>
+      <button class="karma-action-btn" id="btn-rescue">🐾 RECORD RESCUE (+500 KARMA)</button>
     </div>
     <div class="karma-action-card adopt-action">
       <div class="karma-action-title">🏡 RECORD AN ADOPTION</div>
       <p class="karma-action-desc">Just adopted a rescue animal? Log your adoption and earn 3× the karma of a rescue.</p>
-      <button class="karma-action-btn" id="btn-adopt" disabled>CONNECT AVATAR TO EARN</button>
+      <button class="karma-action-btn" id="btn-adopt">🏡 RECORD ADOPTION (+1,500 KARMA)</button>
     </div>
   `;
   steps.after(panel);
@@ -1269,6 +1269,7 @@ const oasis = new OASISClient({ baseUrl: BASE_URL, persistSession: true });
 // ── State ──
 let session = null;
 let avatarKarma = 0;
+let pendingAction = null;
 
 // ── DOM refs ──
 const modal       = document.getElementById('av-modal');
@@ -1344,6 +1345,7 @@ async function onConnected(){
   document.getElementById('av-avatar-name').textContent = name;
   await refreshKarma();
   enableActionButtons();
+  if(pendingAction){const a=pendingAction;pendingAction=null;a();}
 }
 
 async function refreshKarma(){
@@ -1357,17 +1359,25 @@ async function refreshKarma(){
   } catch(_){}
 }
 
-// ── Enable action buttons ──
+// ── Enable action buttons (called after login — just hides note, listeners set at page load) ──
 function enableActionButtons(){
+  const note = document.getElementById('login-note');
+  if(note) note.style.display = 'none';
+}
+
+// ── Set up rescue/adopt listeners at page load ──
+(function(){
   const rescueBtn = document.getElementById('btn-rescue');
   const adoptBtn  = document.getElementById('btn-adopt');
-  const note      = document.getElementById('login-note');
-  if(note) note.style.display = 'none';
-  if(rescueBtn){ rescueBtn.disabled = false; rescueBtn.textContent = '🐾 RECORD RESCUE (+500 KARMA)'; }
-  if(adoptBtn){ adoptBtn.disabled = false; adoptBtn.textContent = '🏡 RECORD ADOPTION (+1,500 KARMA)'; }
-  if(rescueBtn) rescueBtn.addEventListener('click', ()=> earnKarma('rescue'));
-  if(adoptBtn)  adoptBtn.addEventListener('click',  ()=> earnKarma('adopt'));
-}
+  if(rescueBtn) rescueBtn.addEventListener('click', ()=>{
+    if(!session?.avatarId){ pendingAction=()=>earnKarma('rescue'); openModal(); return; }
+    earnKarma('rescue');
+  });
+  if(adoptBtn) adoptBtn.addEventListener('click', ()=>{
+    if(!session?.avatarId){ pendingAction=()=>earnKarma('adopt'); openModal(); return; }
+    earnKarma('adopt');
+  });
+})();
 
 // ── Earn karma ──
 async function earnKarma(type){
@@ -1410,11 +1420,7 @@ function logout(){
   session = null; avatarKarma = 0;
   document.getElementById('av-connect-btn').style.display = '';
   document.getElementById('av-badge').classList.remove('show');
-  const rescueBtn = document.getElementById('btn-rescue');
-  const adoptBtn  = document.getElementById('btn-adopt');
-  const note      = document.getElementById('login-note');
-  if(rescueBtn){ rescueBtn.disabled=true; rescueBtn.textContent='CONNECT AVATAR TO EARN'; }
-  if(adoptBtn){  adoptBtn.disabled=true;  adoptBtn.textContent='CONNECT AVATAR TO EARN'; }
+  const note = document.getElementById('login-note');
   if(note) note.style.display='';
 }
 
