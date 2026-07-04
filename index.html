@@ -929,6 +929,60 @@ footer{position:relative;z-index:1;border-top:1px solid rgba(0,232,124,.1);paddi
     }
   });
 })();
+
+// Adopt enquiry modal
+(function(){
+  const btn=document.getElementById('btn-find-adopt');
+  const modal=document.getElementById('adopt-modal');
+  const close=document.getElementById('adopt-modal-close');
+  const form=document.getElementById('adopt-form');
+  if(btn) btn.addEventListener('click',()=>{ modal.style.display='flex'; });
+  if(close) close.addEventListener('click',()=>{ modal.style.display='none'; });
+  modal.addEventListener('click',e=>{ if(e.target===modal) modal.style.display='none'; });
+  if(form) form.addEventListener('submit',async function(e){
+    e.preventDefault();
+    const fd=new FormData(form);
+    const submitBtn=form.querySelector('[type=submit]');
+    submitBtn.textContent='SENDING…';submitBtn.disabled=true;
+    try{
+      const res=await fetch(form.action,{method:'POST',body:fd,headers:{Accept:'application/json'}});
+      if(res.ok){
+        const rows=[['Name',fd.get('name')],['Email',fd.get('email')],['Location',fd.get('location')],['Animal preference',fd.get('animal_type')],['Requirements',fd.get('requirements')]];
+        form.innerHTML='<div style="font-family:\'Share Tech Mono\',monospace;font-size:12px;line-height:2;text-align:left">'
+          +'<div style="color:var(--amber);letter-spacing:.1em;margin-bottom:12px;font-size:13px">✓ ENQUIRY SENT — WE\'LL FIND YOUR MATCH WITHIN A FEW DAYS</div>'
+          +rows.filter(([,v])=>v).map(([k,v])=>`<div><span style="color:#a8bfd8;letter-spacing:.08em">${k}:</span> <span style="color:#fff">${v}</span></div>`).join('')
+          +'</div>';
+      } else { throw new Error(); }
+    } catch(_){ submitBtn.textContent='FIND MY MATCH →';submitBtn.disabled=false;alert('Something went wrong — please try again.'); }
+  });
+})();
+
+// Find nearest centre modal
+(function(){
+  const btn=document.getElementById('btn-find-centre');
+  const modal=document.getElementById('centre-modal');
+  const close=document.getElementById('centre-modal-close');
+  const form=document.getElementById('centre-form');
+  if(btn) btn.addEventListener('click',()=>{ modal.style.display='flex'; });
+  if(close) close.addEventListener('click',()=>{ modal.style.display='none'; });
+  modal.addEventListener('click',e=>{ if(e.target===modal) modal.style.display='none'; });
+  if(form) form.addEventListener('submit',async function(e){
+    e.preventDefault();
+    const fd=new FormData(form);
+    const submitBtn=form.querySelector('[type=submit]');
+    submitBtn.textContent='SENDING…';submitBtn.disabled=true;
+    try{
+      const res=await fetch(form.action,{method:'POST',body:fd,headers:{Accept:'application/json'}});
+      if(res.ok){
+        const rows=[['Name',fd.get('name')],['Email',fd.get('email')],['City/Country',fd.get('location')],['Reason for visit',fd.get('reason')]];
+        form.innerHTML='<div style="font-family:\'Share Tech Mono\',monospace;font-size:12px;line-height:2;text-align:left">'
+          +'<div style="color:var(--green);letter-spacing:.1em;margin-bottom:12px;font-size:13px">✓ REQUEST SENT — WE\'LL SEND YOUR NEAREST CENTRE DETAILS SHORTLY</div>'
+          +rows.filter(([,v])=>v).map(([k,v])=>`<div><span style="color:#a8bfd8;letter-spacing:.08em">${k}:</span> <span style="color:#fff">${v}</span></div>`).join('')
+          +'</div>';
+      } else { throw new Error(); }
+    } catch(_){ submitBtn.textContent='FIND MY CENTRE →';submitBtn.disabled=false;alert('Something went wrong — please try again.'); }
+  });
+})();
 </script>
 
 <!-- CTA -->
@@ -937,8 +991,8 @@ footer{position:relative;z-index:1;border-top:1px solid rgba(0,232,124,.1);paddi
     <h2>Ready to make a<br><em>difference</em>?</h2>
     <p>Rescue an animal. Adopt a friend. Earn karma. Every action you take is recorded forever on the OASIS blockchain — a permanent testament to your compassion.</p>
     <div class="cta-buttons">
-      <a class="btn-amber" href="#">🐾 Find an Animal to Adopt</a>
-      <a class="btn-primary" href="#">Find Your Nearest Centre</a>
+      <button class="btn-amber" id="btn-find-adopt" style="border:none;cursor:pointer;font-size:inherit">🐾 Find an Animal to Adopt</button>
+      <button class="btn-primary" id="btn-find-centre" style="border:none;cursor:pointer;font-size:inherit">Find Your Nearest Centre</button>
       <a class="btn-secondary" href="https://oportal.oasisomniverse.one" target="_blank" rel="noopener">Create Your Avatar</a>
     </div>
   </div>
@@ -1441,5 +1495,52 @@ function showToast(icon, label, amount){
   } catch(_){}
 })();
 </script>
+
+<!-- ADOPT ENQUIRY MODAL -->
+<div id="adopt-modal" style="display:none;position:fixed;inset:0;z-index:9000;background:rgba(3,7,20,.85);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:20px">
+  <div style="background:#0a1535;border:1px solid rgba(240,165,0,.25);border-radius:20px;padding:40px 36px;max-width:520px;width:100%;position:relative;max-height:90vh;overflow-y:auto">
+    <button id="adopt-modal-close" style="position:absolute;top:16px;right:18px;background:none;border:none;color:#a8bfd8;font-size:20px;cursor:pointer;line-height:1">✕</button>
+    <div style="font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;color:var(--amber);letter-spacing:.12em;margin-bottom:10px">🐾 FIND AN ANIMAL TO ADOPT</div>
+    <h2 style="font-family:'Orbitron',sans-serif;font-size:20px;font-weight:700;color:#fff;margin:0 0 6px">Express Your Interest</h2>
+    <p style="font-size:15px;color:#a8bfd8;margin:0 0 24px;line-height:1.6">Tell us what you're looking for and we'll match you with animals in your area awaiting a loving home.</p>
+    <form id="adopt-form" action="https://formsubmit.co/davidellams@hotmail.com" method="POST" style="display:flex;flex-direction:column;gap:14px">
+      <input type="hidden" name="_subject" value="Noah's Ark ARN — Adoption Enquiry">
+      <input type="hidden" name="_captcha" value="false">
+      <input type="hidden" name="_template" value="table">
+      <input type="text" name="name" required placeholder="Your full name" style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(240,165,0,.2);border-radius:8px;padding:11px 14px;color:#fff;font-size:14px;outline:none;box-sizing:border-box">
+      <input type="email" name="email" required placeholder="your@email.com" style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(240,165,0,.2);border-radius:8px;padding:11px 14px;color:#fff;font-size:14px;outline:none;box-sizing:border-box">
+      <input type="text" name="location" required placeholder="City / Country" style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(240,165,0,.2);border-radius:8px;padding:11px 14px;color:#fff;font-size:14px;outline:none;box-sizing:border-box">
+      <select name="animal_type" required style="width:100%;background:rgba(3,7,20,.9);border:1px solid rgba(240,165,0,.2);border-radius:8px;padding:11px 14px;color:#fff;font-size:14px;outline:none;box-sizing:border-box">
+        <option value="" disabled selected>Animal preference…</option>
+        <option>Dog</option><option>Cat</option><option>Rabbit</option><option>Small animal</option><option>Any — open to all</option>
+      </select>
+      <textarea name="requirements" rows="3" placeholder="Any specific requirements — age, breed, temperament, family situation…" style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(240,165,0,.2);border-radius:8px;padding:11px 14px;color:#fff;font-size:14px;outline:none;box-sizing:border-box;resize:vertical"></textarea>
+      <button type="submit" class="btn-amber" style="border:none;cursor:pointer;font-size:15px;margin-top:4px">FIND MY MATCH →</button>
+    </form>
+  </div>
+</div>
+
+<!-- FIND NEAREST CENTRE MODAL -->
+<div id="centre-modal" style="display:none;position:fixed;inset:0;z-index:9000;background:rgba(3,7,20,.85);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:20px">
+  <div style="background:#0a1535;border:1px solid rgba(0,232,124,.25);border-radius:20px;padding:40px 36px;max-width:520px;width:100%;position:relative;max-height:90vh;overflow-y:auto">
+    <button id="centre-modal-close" style="position:absolute;top:16px;right:18px;background:none;border:none;color:#a8bfd8;font-size:20px;cursor:pointer;line-height:1">✕</button>
+    <div style="font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;color:var(--green);letter-spacing:.12em;margin-bottom:10px">📍 FIND YOUR NEAREST CENTRE</div>
+    <h2 style="font-family:'Orbitron',sans-serif;font-size:20px;font-weight:700;color:#fff;margin:0 0 6px">Locate a Centre Near You</h2>
+    <p style="font-size:15px;color:#a8bfd8;margin:0 0 24px;line-height:1.6">Tell us where you are and why you'd like to visit — we'll get back to you with your nearest Noah's Ark ARN centre details.</p>
+    <form id="centre-form" action="https://formsubmit.co/davidellams@hotmail.com" method="POST" style="display:flex;flex-direction:column;gap:14px">
+      <input type="hidden" name="_subject" value="Noah's Ark ARN — Find Nearest Centre">
+      <input type="hidden" name="_captcha" value="false">
+      <input type="hidden" name="_template" value="table">
+      <input type="text" name="name" required placeholder="Your full name" style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(0,232,124,.2);border-radius:8px;padding:11px 14px;color:#fff;font-size:14px;outline:none;box-sizing:border-box">
+      <input type="email" name="email" required placeholder="your@email.com" style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(0,232,124,.2);border-radius:8px;padding:11px 14px;color:#fff;font-size:14px;outline:none;box-sizing:border-box">
+      <input type="text" name="location" required placeholder="City / Country" style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(0,232,124,.2);border-radius:8px;padding:11px 14px;color:#fff;font-size:14px;outline:none;box-sizing:border-box">
+      <select name="reason" required style="width:100%;background:rgba(3,7,20,.9);border:1px solid rgba(0,232,124,.2);border-radius:8px;padding:11px 14px;color:#fff;font-size:14px;outline:none;box-sizing:border-box">
+        <option value="" disabled selected>Reason for visiting…</option>
+        <option>Adopt an animal</option><option>Volunteer</option><option>Drop off a stray</option><option>Donate supplies</option><option>General visit</option>
+      </select>
+      <button type="submit" class="btn-primary" style="border:none;cursor:pointer;font-size:15px;margin-top:4px">FIND MY CENTRE →</button>
+    </form>
+  </div>
+</div>
 </body>
 </html>
