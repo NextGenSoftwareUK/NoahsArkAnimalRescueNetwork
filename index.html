@@ -103,7 +103,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 40px;display:fl
 .pillar-body h4{font-family:'Orbitron',sans-serif;font-size:12px;font-weight:700;letter-spacing:.1em;color:var(--green);margin-bottom:4px}
 .pillar-body p{font-size:15px;color:#a8bfd8;line-height:1.6}
 .mission-visual{position:relative;display:flex;align-items:center;justify-content:center}
-#mission-canvas{width:100%;max-width:480px;display:block}
+#mission-canvas{width:100%;display:block}
 @media(max-width:820px){
   .mission-grid{grid-template-columns:1fr}
   .mission-visual{order:-1}
@@ -340,7 +340,7 @@ footer{position:relative;z-index:1;border-top:1px solid rgba(0,232,124,.1);paddi
       </div>
     </div>
     <div class="mission-visual">
-      <canvas id="mission-canvas" width="480" height="480"></canvas>
+      <canvas id="mission-canvas"></canvas>
     </div>
   </div>
 </section>
@@ -999,10 +999,10 @@ footer{position:relative;z-index:1;border-top:1px solid rgba(0,232,124,.1);paddi
   let W,H,cx,cy,hub,nodes,scale;
   function resize(){
     W=cv.parentElement.clientWidth||innerWidth;
-    H=Math.round(W*1.04);
+    H=Math.round(W*1.8);
     cv.width=W;cv.height=H;
     cx=W/2;cy=H/2;
-    scale=Math.min(W,H)/780;
+    scale=Math.min(W,H)/500;
     const hubR=Math.round(52*scale);
     const dist=Math.round(155*scale);
     const nodeR=Math.round(32*scale);
@@ -1094,9 +1094,10 @@ footer{position:relative;z-index:1;border-top:1px solid rgba(0,232,124,.1);paddi
   const cv=document.getElementById('mission-canvas');
   if(!cv)return;
   const ctx=cv.getContext('2d');
-  const W=480,H=480;
-  cv.width=W;cv.height=H;
-  const cx=W/2,cy=H/2;
+
+  let W,H,cx,cy,S;
+  function resizeMC(){W=cv.parentElement.clientWidth||480;H=W;cv.width=W;cv.height=H;cx=W/2;cy=H/2;S=W/480;}
+  resizeMC();window.addEventListener('resize',resizeMC);
 
   const orbiters=[
     {angle:0,speed:.012,r:140,icon:'🐕',size:26},
@@ -1105,7 +1106,6 @@ footer{position:relative;z-index:1;border-top:1px solid rgba(0,232,124,.1);paddi
     {angle:Math.PI*1.2,speed:.013,r:140,icon:'🦜',size:22},
     {angle:Math.PI*1.6,speed:.01,r:140,icon:'🐹',size:20},
     {angle:Math.PI*2.0,speed:.008,r:140,icon:'🐕',size:24},
-    // inner ring
     {angle:.5,speed:-.015,r:80,icon:'❤️',size:18},
     {angle:.5+Math.PI,speed:-.015,r:80,icon:'💚',size:18},
     {angle:.5+Math.PI*.7,speed:-.013,r:80,icon:'⭐',size:16},
@@ -1116,28 +1116,25 @@ footer{position:relative;z-index:1;border-top:1px solid rgba(0,232,124,.1);paddi
     t++;
     ctx.clearRect(0,0,W,H);
 
-    // Orbit rings
     [80,140].forEach((r,i)=>{
-      ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);
+      ctx.beginPath();ctx.arc(cx,cy,r*S,0,Math.PI*2);
       ctx.strokeStyle=i===0?'rgba(0,232,124,.15)':'rgba(0,232,124,.1)';
       ctx.lineWidth=1;ctx.setLineDash([4,8]);ctx.stroke();ctx.setLineDash([]);
     });
 
-    // Centre pulsing heart
     const pulse=0.5+0.5*Math.sin(t*.05);
-    const grd=ctx.createRadialGradient(cx,cy,0,cx,cy,60+10*pulse);
+    const grd=ctx.createRadialGradient(cx,cy,0,cx,cy,(60+10*pulse)*S);
     grd.addColorStop(0,'rgba(0,232,124,.18)');grd.addColorStop(.5,'rgba(240,165,0,.08)');grd.addColorStop(1,'transparent');
-    ctx.fillStyle=grd;ctx.beginPath();ctx.arc(cx,cy,60+10*pulse,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=grd;ctx.beginPath();ctx.arc(cx,cy,(60+10*pulse)*S,0,Math.PI*2);ctx.fill();
 
-    ctx.font='52px serif';ctx.textAlign='center';ctx.textBaseline='middle';
-    ctx.fillText('🐾',cx,cy-4);
+    ctx.font=`${Math.round(52*S)}px serif`;ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText('🐾',cx,cy-4*S);
 
-    // Orbiters
     orbiters.forEach(o=>{
       o.angle+=o.speed;
-      const ox=cx+Math.cos(o.angle)*o.r;
-      const oy=cy+Math.sin(o.angle)*o.r;
-      ctx.font=`${o.size}px serif`;ctx.textAlign='center';ctx.textBaseline='middle';
+      const ox=cx+Math.cos(o.angle)*o.r*S;
+      const oy=cy+Math.sin(o.angle)*o.r*S;
+      ctx.font=`${Math.round(o.size*S)}px serif`;ctx.textAlign='center';ctx.textBaseline='middle';
       ctx.fillText(o.icon,ox,oy);
     });
 
