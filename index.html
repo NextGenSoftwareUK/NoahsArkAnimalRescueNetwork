@@ -48,6 +48,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 40px;display:fl
   .nav-links.open{transform:translateX(0)}
   .nav-links-mobile-only{display:list-item}
   .av-connect-btn,.av-connected-badge{display:none!important}
+  .nav-right{order:1}
+  .nav-toggle{order:2}
 }
 
 /* ── SECTIONS ── */
@@ -1292,7 +1294,7 @@ if(navCta){
   navCta.closest('.nav-right').appendChild(connectBtn);
   connectBtn.addEventListener('click', openModal);
   const mobileConnectBtn=document.getElementById('mobile-connect-btn');
-  if(mobileConnectBtn) mobileConnectBtn.addEventListener('click',()=>{toggle.classList.remove('open');links.classList.remove('open');openModal();});
+  if(mobileConnectBtn) mobileConnectBtn.addEventListener('click',()=>{const t=document.getElementById('nav-toggle');const l=document.getElementById('nav-links');if(t)t.classList.remove('open');if(l)l.classList.remove('open');openModal();});
 
   const badge = document.createElement('div');
   badge.className = 'av-connected-badge';
