@@ -1262,14 +1262,12 @@ footer{position:relative;z-index:1;border-top:1px solid rgba(0,232,124,.1);paddi
 })();
 </script>
 
+<script>if(window.fetch)window.fetch=window.fetch.bind(window);</script>
 <script type="module">
 import { OASISClient } from 'https://esm.sh/@oasisomniverse/web4-api@2.0.2';
 
-// Ensure fetch retains its window binding (some bundlers strip it causing "Illegal invocation")
-const boundFetch = (...args) => window.fetch(...args);
-
 const BASE_URL = 'https://api.web4.oasisomniverse.one';
-const oasis = new OASISClient({ baseUrl: BASE_URL, persistSession: true, fetch: boundFetch });
+const oasis = new OASISClient({ baseUrl: BASE_URL, persistSession: true });
 
 // ── State ──
 let session = null;
