@@ -31,8 +31,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 40px;display:fl
 .nav-brand{font-family:'Orbitron',sans-serif;font-size:12px;font-weight:700;letter-spacing:.18em;color:#fff;text-decoration:none;display:flex;align-items:center;gap:10px;white-space:nowrap}
 .nav-brand .paw{font-size:18px}
 .nav-brand span{color:var(--green)}
-.nav-links{display:flex;gap:28px;list-style:none}
-.nav-links a{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:.14em;color:#a8bfd8;text-decoration:none;transition:color .2s;text-transform:uppercase}
+.nav-links{display:flex;gap:16px;list-style:none}
+.nav-links a{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:.07em;color:#a8bfd8;text-decoration:none;transition:color .2s;text-transform:uppercase}
 .nav-links-mobile-only{display:none}
 .nav-links a:hover{color:var(--green)}
 .nav-cta{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:.1em;color:var(--green);border:1px solid rgba(0,232,124,.35);border-radius:999px;padding:8px 18px;text-decoration:none;transition:background .2s,border-color .2s;white-space:nowrap}
@@ -43,7 +43,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 40px;display:fl
 .nav-toggle.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
 .nav-toggle.open span:nth-child(2){opacity:0}
 .nav-toggle.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
-@media(max-width:860px){
+@media(max-width:1100px){
   .nav-toggle{display:flex}
   .nav-links{position:fixed;top:0;right:0;height:100vh;width:min(78vw,320px);flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:14px;padding:76px 32px 24px;overflow-y:auto;background:rgba(3,7,20,.97);backdrop-filter:blur(12px);border-left:1px solid rgba(0,232,124,.12);transform:translateX(100%);transition:transform .3s ease}
   .nav-links.open{transform:translateX(0)}
@@ -755,6 +755,18 @@ footer{position:relative;z-index:1;border-top:1px solid rgba(0,232,124,.1);paddi
         <div style="font-family:'Orbitron',sans-serif;font-size:15px;font-weight:700;color:#fff;letter-spacing:.06em;margin-bottom:10px">Donate</div>
         <p style="font-size:14px;color:#a8bfd8;line-height:1.65;margin-bottom:20px">Fund food, vet care, shelter improvements and rescue operations. Every pound, dollar or euro goes directly to the animals. Donations also generate karma for the donor.</p>
         <button class="btn-secondary" id="btn-donate" style="border:none;cursor:pointer;width:100%;border-color:rgba(255,95,160,.4);color:var(--rose)">Make a Donation</button>
+      </div>
+      <div style="background:var(--bg-card);border:1px solid rgba(0,200,255,.18);border-radius:16px;padding:32px 26px;text-align:center">
+        <div style="font-size:36px;margin-bottom:16px">🚗</div>
+        <div style="font-family:'Orbitron',sans-serif;font-size:15px;font-weight:700;color:#fff;letter-spacing:.06em;margin-bottom:10px">Rescue Driver</div>
+        <p style="font-size:14px;color:#a8bfd8;line-height:1.65;margin-bottom:20px">Transport animals between rescue centres, vet appointments and foster homes. A reliable driver can be the difference between life and death. Earn <span style="color:#00c8ff">+500 karma per rescue run</span>.</p>
+        <button class="btn-secondary" id="btn-volunteer-driver" style="border:none;cursor:pointer;width:100%;border-color:rgba(0,200,255,.4);color:#00c8ff">Become a Driver</button>
+      </div>
+      <div style="background:var(--bg-card);border:1px solid rgba(240,165,0,.18);border-radius:16px;padding:32px 26px;text-align:center">
+        <div style="font-size:36px;margin-bottom:16px">⭐</div>
+        <div style="font-family:'Orbitron',sans-serif;font-size:15px;font-weight:700;color:#fff;letter-spacing:.06em;margin-bottom:10px">Sponsor an Animal</div>
+        <p style="font-size:14px;color:#a8bfd8;line-height:1.65;margin-bottom:20px">Choose a specific resident animal at one of our centres and cover their food, vet care and enrichment with a monthly contribution. Your sponsored animal will be part of your OASIS avatar profile. Earn <span style="color:var(--amber)">+250 karma per month</span>.</p>
+        <button class="btn-amber" id="btn-sponsor-animal" style="border:none;cursor:pointer;width:100%">Sponsor an Animal</button>
       </div>
     </div>
     <div style="max-width:800px;margin:0 auto;background:linear-gradient(135deg,rgba(0,232,124,.06),rgba(10,21,53,.97));border:1px solid rgba(0,232,124,.18);border-radius:20px;padding:40px 36px">
@@ -1641,7 +1653,7 @@ function showToast(icon, label, amount){
   const closeBtn=document.getElementById('volunteer-modal-close');
   const form=document.getElementById('volunteer-form');
   const typeSelect=document.getElementById('volunteer-type');
-  ['btn-volunteer-centre','btn-volunteer-foster','btn-volunteer-skills','btn-donate','btn-forum-post'].forEach(id=>{
+  ['btn-volunteer-centre','btn-volunteer-foster','btn-volunteer-skills','btn-donate','btn-forum-post','btn-volunteer-driver','btn-sponsor-animal'].forEach(id=>{
     const btn=document.getElementById(id);
     if(!btn) return;
     btn.addEventListener('click',()=>{
@@ -1649,6 +1661,8 @@ function showToast(icon, label, amount){
       else if(id==='btn-volunteer-foster') typeSelect.value='foster';
       else if(id==='btn-volunteer-skills') typeSelect.value='skills';
       else if(id==='btn-forum-post') typeSelect.value='forum';
+      else if(id==='btn-volunteer-driver') typeSelect.value='driver';
+      else if(id==='btn-sponsor-animal') typeSelect.value='sponsor';
       else typeSelect.value='centre';
       modal.style.display='flex';
     });
@@ -1690,6 +1704,8 @@ function showToast(icon, label, amount){
         <option value="foster">Foster a pet</option>
         <option value="skills">Skills volunteer (design, marketing, admin, etc.)</option>
         <option value="donate">Make a donation</option>
+        <option value="driver">Rescue driver (animal transport)</option>
+        <option value="sponsor">Sponsor an animal</option>
         <option value="forum">Join the community forum</option>
         <option value="other">Other</option>
       </select>
